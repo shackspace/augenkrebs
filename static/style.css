@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+#videourl{
+	width:95%
+}
+
+#urlfieldlabel{
+	font-size:75%;
+	font-style:italic;
+}
+
+#vspace{
+	height:20em;
+}
+
+#proudlymade{
+	margin-bottom:80%;
+}
