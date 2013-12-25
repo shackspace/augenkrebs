@@ -9,12 +9,16 @@ $def with ()
     <link rel="stylesheet" type="text/css" href="static/style.css">
 	</head>
 	<body>
-		<h1>byteplayer</h1>
+		<h1><a class="undecorated" href="/">byteplayer</a></h1>
 	<div>
 		<fieldset>
 			<legend id="urlfieldlabel">Paste your URL below:</legend>
 			<form name="video_form" method="get" >
-				<input type="text" name="videourl" id="videourl" value=""></input><br>
+				<input type="text" name="videourl" class="verywide" value=""></input><br>
+				<select class="verywide" name="urltype">
+					<option value="youtubedl">use youtube-dl to open the URL</option>
+					<option value="plainurl">pass the URL directly to mplayer</option>
+				</select><br>
 				<input type="submit" name="do" value="play"></input>
 				<input type="submit" name="do" value="stop"></input>
 			</form>

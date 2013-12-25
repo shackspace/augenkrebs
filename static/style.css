@@ -3,7 +3,12 @@ body {
   text-align: center;
 }
 
-#videourl{
+a.undecorated{
+	text-decoration:none;
+	color:black;
+}
+
+.verywide{
 	width:95%
 }
 
