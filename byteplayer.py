@@ -2,7 +2,7 @@ import web
 from web import form 
 import os
 import sys
-import subprocess, shlex
+import subprocess
 sys.path.append(os.path.dirname(__file__))
 
 from config import *
@@ -44,8 +44,7 @@ class byteplayer:
 		#TODO implement livestreamer integration
 
 	def plainurl_play(self,url):
-		commandline = TERMINALEMULATOR + " " + MPLAYER + " " + MPLAYERARGS + " " + url
-		commandline = shlex.split(commandline)
+		commandline = TERMINALEMULATOR + [MPLAYER] + MPLAYERARGS + [url]
 		subprocess.Popen(commandline)
 		#this function together with urltype=plainurl might come in handy when implementing a video database
 
