@@ -10,7 +10,7 @@ $def with ()
 	<body>
 		<a id="home" href="/">byteplayer</a>
 		<div>
-			<form name="video_form" method="post">
+			<form name="video_form" method="post" onsubmit="$('open').onclick();return false">
 				<input type="text" name="videourl" id="videourl" onclick="this.select()"
 					placeholder="http://youtube.com/blubb"
 				>
