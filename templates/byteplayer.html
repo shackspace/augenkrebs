@@ -1,25 +1,28 @@
 $def with ()
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
-   "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>byteplayer</title>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-    <link rel="stylesheet" type="text/css" href="static/style.css">
+		<link rel="stylesheet" type="text/css" href="static/style.css">
 	</head>
 	<body>
-		<h1><a class="undecorated" href="/">byteplayer</a></h1>
+		<a id="home" href="/">byteplayer</a>
 	<div>
-		<fieldset>
-			<legend id="urlfieldlabel">Paste your URL below:</legend>
-			<form name="video_form" method="get" >
-				<input type="text" name="videourl" class="verywide" value=""></input><br>
-				<input type="submit" name="do" value="open"></input>
-				<input type="submit" name="do" value="pause"></input>
-				<input type="submit" name="do" value="stop"></input>
-			</form>
-		</fieldset>
+		<form name="video_form" method="get" onsubmit="return false;">
+			<!-- TODO: insert random example links with JS -->
+			<input type="text" name="videourl" id="videourl" onclick="this.select()"
+				placeholder="http://youtube.com/blubb"
+			></input>
+			
+			<div id="buttons">
+				<input type="submit" name="do" value="Open"></input>
+				<input type="submit" name="do" value="Pause"></input>
+				<input type="submit" name="do" value="Stop"></input>
+			</div>
+		</form>
 	</div>
 	</body>
+	<script src="static/byteplayer.js" lang="text/javascript"></script>
 </html>

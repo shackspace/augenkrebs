@@ -17,11 +17,11 @@ class byteplayer:
 	def GET(self,url):
 		params = web.input()
 		try:
-			if params.do == "open":
+			if params.do == "Open":
 				self.open(params.videourl)
-			elif params.do == "pause":
+			elif params.do == "Pause":
 				self.pause()
-			elif params.do == "stop":
+			elif params.do == "Stop":
 				self.stop()
 			else:
 				raise ValueError("Illegal value for URL parameter 'do'")
