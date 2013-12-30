@@ -17,13 +17,8 @@ class byteplayer:
 	def GET(self,url):
 		params = web.input()
 		try:
-			if params.do == "play":
-				if params.urltype == "youtubedl":
-					self.youtubedl_play(params.videourl)
-				elif params.urltype == "plainurl":
-					self.plainurl_play(params.videourl)
-				else:
-					raise ValueError("Illegal value for URL parameter 'urltype'")
+			if params.do == "open":
+				self.open(params.videourl)
 			elif params.do == "pause":
 				self.pause()
 			elif params.do == "stop":
@@ -34,20 +29,21 @@ class byteplayer:
 			pass #AttributeErrors are raised if some URL parameters are not passed, so we can safely ignore them here
 		web.header("Content-Type", 'text/html')
 		return render.byteplayer()
-
-	def youtubedl_play(self,url):
-		playback_url = subprocess.check_output(["youtube-dl"] + YOUTUBEDLARGS + [url])
-		self.plainurl_play(playback_url)
-
-	def livestreamer_play(self,url):
-		raise NotImplementedError("livestreamer integration is not implemented yet")
-		#TODO implement livestreamer integration
-
-	def plainurl_play(self,url):
+	
+	def open(self,url):
+		# TODO: improve code, the try catch stuff prints an
+		# exception to the terminal!
+		# Also to avoid nested try catch statements, create a wrapper
+		# function as soon as there are more URL grabbers
+		try:
+			url = subprocess.check_output(["youtube-dl"] + YOUTUBEDLARGS + [url])
+		except:
+			# TODO: try livestreamer etc.
+			pass
+		
 		commandline = TERMINALEMULATOR + [MPLAYER] + MPLAYERARGS + [url]
 		subprocess.Popen(commandline)
-		#this function together with urltype=plainurl might come in handy when implementing a video database
-
+	
 	def stop(self):
 		subprocess.call(["killall","-9",MPLAYER])
 
