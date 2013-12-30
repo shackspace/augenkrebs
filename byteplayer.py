@@ -27,22 +27,39 @@ class byteplayer:
 				raise ValueError("Illegal value for URL parameter 'do'")
 		except AttributeError:
 			pass #AttributeErrors are raised if some URL parameters are not passed, so we can safely ignore them here
-		web.header("Content-Type", 'text/html')
-		return render.byteplayer()
-	
+		if url != "": #redirect to main page after submitting via GET
+			raise web.seeother('/')
+		else:
+			web.header("Content-Type", 'text/html')
+			return render.byteplayer()
+
+	def POST(self,url):
+		return self.GET(url)
+
+	def plainurl_play(self,url):
+		commandline = TERMINALEMULATOR + [MPLAYER] + MPLAYERARGS + [url]
+		subprocess.Popen(commandline)
+		
+	def youtubedl_play(self,url):
+		playbackurl = subprocess.check_output(["youtube-dl"] + YOUTUBEDLARGS + [url])
+		self.plainurl_play(playbackurl)
+
+	def livestreamer_play(self,url):
+		commandline = TERMINALEMULATOR + ["livestreamer",url] + LIVESTREAMERARGS
+		subprocess.Popen(commandline)
+
 	def open(self,url):
 		# TODO: improve code, the try catch stuff prints an
 		# exception (caused by youtube-dl) to the terminal!
 		# Also to avoid nested try catch statements, create a wrapper
 		# function as soon as there are more URL grabbers
-		try:
-			url = subprocess.check_output(["youtube-dl"] + YOUTUBEDLARGS + [url])
-		except:
-			# TODO: try livestreamer etc.
-			pass
-		
-		commandline = TERMINALEMULATOR + [MPLAYER] + MPLAYERARGS + [url]
-		subprocess.Popen(commandline)
+		self.stop() #before opening a new video, stop any video potentially still running
+		for playfunc in [self.youtubedl_play,self.livestreamer_play,self.plainurl_play]:
+			try:
+				playfunc(url)
+				break
+			except:
+				continue
 	
 	def stop(self):
 		subprocess.call(["killall","-9",MPLAYER])

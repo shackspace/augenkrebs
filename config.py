@@ -6,3 +6,4 @@ MPLAYER_PIPE_NAME = "/tmp/mplayer_slave_pipe"
 MPLAYER = "mplayer2"  #name of the mplayer executable, may vary on different systems (mplayer vs. mplayer2)
 MPLAYERARGS = ["--fs","--slave", "--input=file="+MPLAYER_PIPE_NAME, "--cache=32000", "--framedrop", "--cookies", "--cookies-file="+COOKIEFILE]
 YOUTUBEDLARGS = ["--get-url","--cookies",COOKIEFILE]
+LIVESTREAMERARGS = ["best","--verbose-player","--player-passthrough","hls,http,rtmp","-p",' '.join(["mplayer2"] + MPLAYERARGS)]
