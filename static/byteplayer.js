@@ -37,12 +37,15 @@ function init()
 		random_link();
 	
 	var buttons = $("buttons").getElementsByTagName("input");
-	for(var i=0;i<buttons.length;i++) buttons[i].onclick=function()
-	{
-		var action = this.value;
-		var url = "/?do="+action;
-		if(action == "Open") url += "&videourl="+encodeURIComponent($("videourl").value);
-		xhr(url);
+	for(var i=0;i<buttons.length;i++) {
+		buttons[i].type="button";
+		buttons[i].onclick=function()
+		{
+			var action = this.value;
+			var url = "/?do="+action;
+			if(action == "Open") url += "&videourl="+encodeURIComponent($("videourl").value);
+			xhr(url);
+		};
 	}
 }
 init();

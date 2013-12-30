@@ -10,13 +10,10 @@ $def with ()
 	<body>
 		<a id="home" href="/">byteplayer</a>
 		<div>
-			<form name="video_form" method="get" onsubmit="$('open').onclick();return false;">
+			<form name="video_form" method="post">
 				<input type="text" name="videourl" id="videourl" onclick="this.select()"
 					placeholder="http://youtube.com/blubb"
 				>
-				
-				<!-- TODO: python should redirect back to '/' when this gets sent -->
-				<input type="hidden" name="redirect" value="1">
 				
 				<div id="buttons">
 					<input type="submit" name="do" value="Open" id="open">
