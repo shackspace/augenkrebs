@@ -9,22 +9,22 @@ $def with ()
 	</head>
 	<body>
 		<a id="home" href="/">byteplayer</a>
-	<div>
-		<form name="video_form" method="get" onsubmit="$('open').onclick();return false;">
-			<input type="text" name="videourl" id="videourl" onclick="this.select()"
-				placeholder="http://youtube.com/blubb"
-			>
-			
-			<!-- TODO: python should redirect back to '/' when this gets sent -->
-			<input type="hidden" name="redirect" value="1">
-			
-			<div id="buttons">
-				<input type="submit" name="do" value="Open" id="open">
-				<input type="submit" name="do" value="Pause">
-				<input type="submit" name="do" value="Stop">
-			</div>
-		</form>
-	</div>
+		<div>
+			<form name="video_form" method="get" onsubmit="$('open').onclick();return false;">
+				<input type="text" name="videourl" id="videourl" onclick="this.select()"
+					placeholder="http://youtube.com/blubb"
+				>
+				
+				<!-- TODO: python should redirect back to '/' when this gets sent -->
+				<input type="hidden" name="redirect" value="1">
+				
+				<div id="buttons">
+					<input type="submit" name="do" value="Open" id="open">
+					<input type="submit" name="do" value="Pause">
+					<input type="submit" name="do" value="Stop">
+				</div>
+			</form>
+		</div>
+		<script src="static/byteplayer.js" lang="text/javascript"></script>
 	</body>
-	<script src="static/byteplayer.js" lang="text/javascript"></script>
 </html>
