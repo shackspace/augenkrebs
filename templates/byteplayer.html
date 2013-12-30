@@ -10,16 +10,18 @@ $def with ()
 	<body>
 		<a id="home" href="/">byteplayer</a>
 	<div>
-		<form name="video_form" method="get" onsubmit="return false;">
-			<!-- TODO: insert random example links with JS -->
+		<form name="video_form" method="get" onsubmit="$('open').onclick();return false;">
 			<input type="text" name="videourl" id="videourl" onclick="this.select()"
 				placeholder="http://youtube.com/blubb"
-			></input>
+			>
+			
+			<!-- TODO: python should redirect back to '/' when this gets sent -->
+			<input type="hidden" name="redirect" value="1">
 			
 			<div id="buttons">
-				<input type="submit" name="do" value="Open"></input>
-				<input type="submit" name="do" value="Pause"></input>
-				<input type="submit" name="do" value="Stop"></input>
+				<input type="submit" name="do" value="Open" id="open">
+				<input type="submit" name="do" value="Pause">
+				<input type="submit" name="do" value="Stop">
 			</div>
 		</form>
 	</div>

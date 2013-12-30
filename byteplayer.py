@@ -32,7 +32,7 @@ class byteplayer:
 	
 	def open(self,url):
 		# TODO: improve code, the try catch stuff prints an
-		# exception to the terminal!
+		# exception (caused by youtube-dl) to the terminal!
 		# Also to avoid nested try catch statements, create a wrapper
 		# function as soon as there are more URL grabbers
 		try:
