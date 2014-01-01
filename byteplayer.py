@@ -50,6 +50,7 @@ class byteplayer:
 
 	def open(self,url):
 		self.stop() #before opening a new video, stop any video potentially still running
+		#TODO implement timeouts for calls to video URL processors like youtube-dl
 		for playfunc in [self.youtubedl_play,self.livestreamer_play,self.plainurl_play]:
 			try:
 				playfunc(url)

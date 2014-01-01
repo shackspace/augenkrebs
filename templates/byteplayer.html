@@ -15,11 +15,16 @@ $def with ()
 					placeholder="http://youtube.com/blubb"
 				>
 				
-				<div id="buttons">
+				<div class="buttons">
 					<input type="submit" name="do" value="Open" id="open">
 					<input type="submit" name="do" value="Pause">
 					<input type="submit" name="do" value="Stop">
 				</div>
+			</form>
+		</div>
+		<div class="buttons">
+			<form method="get" action="/powermanagement">
+				<input type="submit" name="action" value="suspend">
 			</form>
 		</div>
 		<script src="static/byteplayer.js" lang="text/javascript"></script>

@@ -14,8 +14,10 @@ import datetime
 sys.path.append(os.path.dirname(__file__))
 from config import *
 from byteplayer import *
+from powermanagement import *
 
 urls = (
+	'/powermanagement(.*)', 'powermanagement',
 	'/(.*)', 'byteplayer'
     )
 

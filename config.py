@@ -7,3 +7,4 @@ MPLAYER = "mplayer2"  #name of the mplayer executable, may vary on different sys
 MPLAYERARGS = ["--fs","--slave", "--input=file="+MPLAYER_PIPE_NAME, "--cache=32000", "--framedrop", "--cookies", "--cookies-file="+COOKIEFILE]
 YOUTUBEDLARGS = ["--get-url","--cookies",COOKIEFILE]
 LIVESTREAMERARGS = ["best","--verbose-player","--player-passthrough","hls,http,rtmp","-p",' '.join(["mplayer2"] + MPLAYERARGS)]
+SUSPEND_COMMAND = ["echo","please configure the proper command for suspend to ram"] #["sudo","pm-suspend"]
