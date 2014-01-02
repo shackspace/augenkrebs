@@ -18,7 +18,7 @@ body {
 	text-decoration: underline;
 }
 
-#videourl
+#videourl, #droptarget
 {
 	width: 500px;
 	text-align: center;
@@ -54,4 +54,22 @@ body {
 #buttons input:active, .button:active {
 	position:relative;
 	top:1px;
+}
+
+#droptarget{
+	display:none; /* this will be changed from JS, so the drop target is only visible if we may use JS */
+	padding-top:5em;
+	padding-bottom:5em;
+	color:grey;
+	font-weight:bold;
+	margin-left:auto;
+	margin-right:auto;
+	border-style:solid;
+	border-radius:10px;
+	border-width:3px;
+	border-color:white;
+}
+
+#droptarget:hover{
+	border-color:grey;
 }

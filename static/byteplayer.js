@@ -29,6 +29,17 @@ function random_link()
 	$("videourl").value = recommended[index];
 }
 
+function allowDrop(ev){
+	ev.preventDefault();
+}
+
+function drop(ev){
+	ev.preventDefault();
+	var data=ev.dataTransfer.getData("Text");
+	var url = "/?do=Open&videourl="+encodeURIComponent(data);
+	xhr(url);
+}
+
 function init()
 {
 	$("home").href="#";
@@ -47,5 +58,10 @@ function init()
 			xhr(url);
 		};
 	}
+
+	var dndtarget = $("droptarget");
+	dndtarget.style.display="block";
+	dndtarget.ondragover = allowDrop;
+	dndtarget.ondrop = drop;
 }
 init();
