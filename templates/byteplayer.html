@@ -14,17 +14,16 @@ $def with ()
 				<input type="text" name="videourl" id="videourl" onclick="this.select()"
 					placeholder="http://youtube.com/blubb"
 				>
-				
-				<div class="buttons">
+				<div id="buttons">
 					<input type="submit" name="do" value="Open" id="open">
 					<input type="submit" name="do" value="Pause">
 					<input type="submit" name="do" value="Stop">
 				</div>
 			</form>
 		</div>
-		<div class="buttons">
+		<div>
 			<form method="get" action="/powermanagement">
-				<input type="submit" name="action" value="suspend">
+				<input type="submit" class="button" name="action" value="suspend">
 			</form>
 		</div>
 		<script src="static/byteplayer.js" lang="text/javascript"></script>
