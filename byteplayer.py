@@ -59,7 +59,7 @@ class byteplayer:
 				continue
 	
 	def stop(self):
-		subprocess.call(["killall","-9",MPLAYER])
+		subprocess.call(["killall","-q","-9",MPLAYER])
 
 	def pause(self):
 		pipein = open(MPLAYER_PIPE_NAME,'w')
