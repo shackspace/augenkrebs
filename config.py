@@ -1,3 +1,4 @@
+# TODO: remove mplayer related variables
 DISPLAY = ":0"
 TEMPLATEDIR = "templates"
 COOKIEFILE = "/tmp/byteplayer_cookies"
@@ -10,8 +11,9 @@ LIVESTREAMERARGS = ["best","--verbose-player","--player-passthrough","hls,http,r
 SUSPEND_COMMAND = ["echo","please configure the proper command for suspend to ram"] #["sudo","pm-suspend"]
 
 
+# The player gets started up at the start of the script
 MPRIS2_PLAYER_CMD = "cvlc"
-MPRIS2_PLAYER_ARGS = [""]
+MPRIS2_PLAYER_ARGS = ["-q"]
 
 # DBUS Address
-MPRIS2_PLAYER_ADR = "org.mpris.MediaPlayer2.vlc"
+MPRIS2_PLAYER_NAME = "org.mpris.MediaPlayer2.vlc"

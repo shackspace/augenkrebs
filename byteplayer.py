@@ -9,13 +9,6 @@ from config import *
 render = web.template.render(TEMPLATEDIR)
 
 class byteplayer:
-	def __init__(self):
-		os.environ['DISPLAY'] = DISPLAY # maybe it's sufficient to only set this once, e.g. during program startup
-		
-		# Open the MPRIS2 player and try to find it
-		subprocess.Popen(join([MPRIS2_PLAYER_CMD] + MPRIS2_PLAYER_ARGS))
-		
-		
 	def quit(self):
 		# close mpris2 player via dbus!
 		print "STUB"
