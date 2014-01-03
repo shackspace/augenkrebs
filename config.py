@@ -14,5 +14,5 @@ SUSPEND_COMMAND = ["echo","please configure the proper command for suspend to ra
 # The player gets started up at the start of the script
 MPRIS2_CONNECT_TIMEOUT = 5 # seconds
 MPRIS2_PLAYER_CMD = "cvlc"
-MPRIS2_PLAYER_ARGS = ["-q"]
+MPRIS2_PLAYER_ARGS = ["-q", "-f"]
 MPRIS2_PLAYER_NAME = "org.mpris.MediaPlayer2.vlc" # D-Bus Address
