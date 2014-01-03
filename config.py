@@ -8,3 +8,10 @@ MPLAYERARGS = ["--fs","--slave", "--input=file="+MPLAYER_PIPE_NAME, "--cache=320
 YOUTUBEDLARGS = ["--get-url","--cookies",COOKIEFILE]
 LIVESTREAMERARGS = ["best","--verbose-player","--player-passthrough","hls,http,rtmp","-p",' '.join(["mplayer2"] + MPLAYERARGS)]
 SUSPEND_COMMAND = ["echo","please configure the proper command for suspend to ram"] #["sudo","pm-suspend"]
+
+
+MPRIS2_PLAYER_CMD = "cvlc"
+MPRIS2_PLAYER_ARGS = [""]
+
+# DBUS Address
+MPRIS2_PLAYER_ADR = "org.mpris.MediaPlayer2.vlc"

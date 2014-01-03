@@ -24,7 +24,16 @@ urls = (
 
 app = web.application(urls, globals())
 
-if __name__ == "__main__":
-  app.run()
+try:
+	if __name__ == "__main__":
+		app.run()
+except:
+	print ""
+	print "Couldn't start the webserver!"
+	print "Maybe port 8080 is already in use?"
+	print "Try another one like this:"
+	print "  ./main.py 1337"
+	print ""
+	quit()
 
 application = app.wsgifunc()

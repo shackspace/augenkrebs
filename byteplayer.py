@@ -11,9 +11,15 @@ render = web.template.render(TEMPLATEDIR)
 class byteplayer:
 	def __init__(self):
 		os.environ['DISPLAY'] = DISPLAY # maybe it's sufficient to only set this once, e.g. during program startup
-		if not os.path.exists(MPLAYER_PIPE_NAME):
-			os.mkfifo(MPLAYER_PIPE_NAME)
-	
+		
+		# Open the MPRIS2 player and try to find it
+		subprocess.Popen(join([MPRIS2_PLAYER_CMD] + MPRIS2_PLAYER_ARGS))
+		
+		
+	def quit(self):
+		# close mpris2 player via dbus!
+		print "STUB"
+		
 	def GET(self,url):
 		params = web.input()
 		try:
