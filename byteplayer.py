@@ -6,6 +6,7 @@ import subprocess
 sys.path.append(os.path.dirname(__file__))
 
 from config import *
+from mpris2 import *
 render = web.template.render(TEMPLATEDIR)
 
 class byteplayer:
@@ -48,19 +49,21 @@ class byteplayer:
 		subprocess.Popen(commandline)
 
 	def open(self,url):
-		self.stop() #before opening a new video, stop any video potentially still running
+		#self.stop() #before opening a new video, stop any video potentially still running
 		#TODO implement timeouts for calls to video URL processors like youtube-dl
-		for playfunc in [self.youtubedl_play,self.livestreamer_play,self.plainurl_play]:
-			try:
-				playfunc(url)
-				break
-			except:
-				continue
+		#for playfunc in [self.youtubedl_play,self.livestreamer_play,self.plainurl_play]:
+		#	try:
+		#		playfunc(url)
+		#		break
+		#	except:
+		#		continue
+		
+		player.OpenUri(url)
+		player.Play()
+		
 	
 	def stop(self):
-		subprocess.call(["killall","-q","-9",MPLAYER])
+		player.Stop()
 
 	def pause(self):
-		pipein = open(MPLAYER_PIPE_NAME,'w')
-		pipein.write('pause\n')
-		pipein.close()
+		player.PlayPause()

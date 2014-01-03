@@ -10,28 +10,15 @@
 #
 import web
 import cgi
-web.config.debug = True
-
 import sys
 import os
 import time
 import datetime
-import dbus
 
 sys.path.append(os.path.dirname(__file__))
 from config import *
 from byteplayer import *
 from powermanagement import *
-
-
-# Open the MPRIS2 player and connect to it via DBUS/MPRIS2
-os.environ['DISPLAY'] = DISPLAY
-line = [MPRIS2_PLAYER_CMD] + MPRIS2_PLAYER_ARGS
-subprocess.Popen(line)
-
-proxy = dbus.SessionBus().get_object(MPRIS2_PLAYER_NAME,'/org/mpris/MediaPlayer2')
-prop = dbus.Interface(proxy, 'org.freedesktop.DBus.Properties')
-print "Connected to: " + prop.Get('org.mpris.MediaPlayer2', 'Identity')
 
 
 # Open the webserver
