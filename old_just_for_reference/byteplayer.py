@@ -58,12 +58,23 @@ class byteplayer:
 		#	except:
 		#		continue
 		
+		
+		print "Someone wants to watch: " +url
+		print "Trying to play this with " + player_name + " directly..."
 		player.OpenUri(url)
 		player.Play()
 		
+		status = mpris2_status()
+		if status == "Stopped":
+			print "STUB: " + player_name + " can't play this directly."
+			print "STUB: Livestreamer etc. support isn't (re-)implemented yet."
+		else:
+			print "Success! Buffering might take some time though."
 	
 	def stop(self):
 		player.Stop()
 
 	def pause(self):
 		player.PlayPause()
+	def log_message(self, format, *args):
+		return

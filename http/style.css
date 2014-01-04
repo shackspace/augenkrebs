@@ -18,7 +18,7 @@ body {
 	text-decoration: underline;
 }
 
-#videourl, #droptarget
+#url, #droptarget
 {
 	width: 500px;
 	text-align: center;

@@ -1,4 +1,7 @@
 # TODO: remove mplayer related variables
+# TODO: add prefix to config variables
+
+PORT=1337
 DISPLAY = ":0"
 TEMPLATEDIR = "templates"
 COOKIEFILE = "/tmp/byteplayer_cookies"

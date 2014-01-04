@@ -2,6 +2,8 @@
 .*
 !static
 !templates
+!old_just_for_reference
+!http
 !*.py
 !*.gitignore
 !*.html

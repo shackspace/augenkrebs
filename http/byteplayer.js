@@ -52,6 +52,7 @@ function init()
 		buttons[i].type="button";
 		buttons[i].onclick=function()
 		{
+			// TODO: convert to post
 			var action = this.value;
 			var url = "/?do="+action;
 			if(action == "Open") url += "&videourl="+encodeURIComponent($("videourl").value);

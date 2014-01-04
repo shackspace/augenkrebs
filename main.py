@@ -1,41 +1,67 @@
-#!/usr/bin/env python2
-# -- coding: utf-8 --
-# vim: ts=2 sts=2 sw=2 expandtab
-#
-# TODO: Find an elegant way to print meaningful errors
-#       (which is NOT replacing every line with 5 lines
-#		(try cmd except print quit)!)
-#
-# TODO: sort this import stuff, don't mix it with anything
-#
-import web
-import cgi
-import sys
-import os
+#!/usr/bin/env python3
+
 import time
-import datetime
-
-sys.path.append(os.path.dirname(__file__))
+import os
+import http.server
 from config import *
-from byteplayer import *
-from powermanagement import *
+from mpris2 import *
+import inspect
+import urllib
 
+# read http files to RAM
+pwd = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+files = {}
+for filename in os.listdir(pwd + "/http"):
+	with open(pwd+'/http/'+filename, 'r') as f:
+		content = bytes(f.read(),"UTF-8")
+	files["/"+filename] = content
 
-# Open the webserver
-urls = (
-	'/powermanagement(.*)', 'powermanagement',
-	'/(.*)', 'byteplayer'
-    )
-app = web.application(urls, globals())
+# This is the server code
+class byteplayer(http.server.BaseHTTPRequestHandler):
+	# API calls
+	def do_POST(s):
+		length = int(s.headers['Content-Length'])
+		post   = urllib.parse.parse_qs(s.rfile.read(length).decode('utf-8'))
+		if "do" in post:
+			ip = s.client_address[0]
+			action = post["do"][0]
+			
+			if action == "Open" and "url" in post:
+				url = post["url"][0]
+				print(ip + " wants to watch: " +url)
+				print("Trying to play this with " + player_name + " directly...")
+				player.OpenUri(url)
+				player.Play()
+				
+				status = mpris2_status()
+				time.sleep(0.6)
+				if status == "Stopped":
+					print("STUB: " + player_name + " can't play this directly.")
+					print("STUB: Livestreamer etc. support isn't (re-)implemented yet.")
+				else:
+					print("Success! Buffering might take some time though.")
+			
+			
+			elif action == "Pause": player.PlayPause()
+			elif action == "Stop":  player.Stop()
+		
+		s.do_GET() # return index.html
+	# Static files
+	def do_GET(s):
+		s.send_response(200)
+		s.end_headers()
+		
+		if s.path == "/": s.path = "/index.html"
+		if s.path in files: s.wfile.write(files[s.path])
+		else:
+			s.wfile.write(bytes("404","UTF-8"))
+	def log_message(self, format, *args):
+		return
+
+print("Running httpd")
+httpd = http.server.HTTPServer(('', PORT), byteplayer)
 try:
-	if __name__ == "__main__":
-		app.run()
-except:
-	print ""
-	print "Couldn't start the webserver!"
-	print "Maybe port 8080 is already in use?"
-	print "Try another one like this:"
-	print "  ./main.py 1337"
-	print ""
-	quit()
-application = app.wsgifunc()
+	httpd.serve_forever()
+except KeyboardInterrupt:
+	pass
+httpd.server_close()
