@@ -11,8 +11,8 @@ subprocess.Popen([MPRIS2_PLAYER_CMD] + MPRIS2_PLAYER_ARGS)
 
 
 # Try to connect to DBUS with a timeout
-player_name = False
-player = False
+player_name = None
+player = None
 for i in range(0, MPRIS2_CONNECT_TIMEOUT*10):
 	try:
 		proxy = dbus.SessionBus().get_object(MPRIS2_PLAYER_NAME,'/org/mpris/MediaPlayer2')
@@ -23,10 +23,11 @@ for i in range(0, MPRIS2_CONNECT_TIMEOUT*10):
 	except:
 		time.sleep(0.1)
 	
-if player_name == False:
-	print("Couldn't connect to mpris2 player via D-Bus in " + str(MPRIS2_CONNECT_TIMEOUT) + "s, giving up!")
-	print("You can increase the MPRIS2_CONNECT_TIMEOUT in the config file.")
-	print("The player process is still open, you'll have to kill it manually.")
+player_name = None
+if player_name == None:
+	print("Couldn't connect to mpris2 player via D-Bus in " + str(MPRIS2_CONNECT_TIMEOUT) + "s, giving up! \n" \
+		+ " You can increase the MPRIS2_CONNECT_TIMEOUT in the config file. \n" \
+		+ " The player process is still open, you'll have to kill it manually.")
 	quit()
 
 print("Connected to: " + player_name)

@@ -28,16 +28,16 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 			
 			if action == "Open" and "url" in post:
 				url = post["url"][0]
-				print(ip + " wants to watch: " +url)
-				print("Trying to play this with " + player_name + " directly...")
+				print(ip + " wants to watch: " +url+"\n" \
+					+ "Trying to play this with " + player_name + " directly...")
 				player.OpenUri(url)
 				player.Play()
 				
 				status = mpris2_status()
 				time.sleep(0.6)
 				if status == "Stopped":
-					print("STUB: " + player_name + " can't play this directly.")
-					print("STUB: Livestreamer etc. support isn't (re-)implemented yet.")
+					print("STUB: " + player_name + " can't play this directly.\n" \
+					+ "STUB: Livestreamer etc. support isn't (re-)implemented yet.")
 				else:
 					print("Success! Buffering might take some time though.")
 			
