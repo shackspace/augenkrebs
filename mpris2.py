@@ -23,7 +23,6 @@ for i in range(0, MPRIS2_CONNECT_TIMEOUT*10):
 	except:
 		time.sleep(0.1)
 	
-player_name = None
 if player_name == None:
 	print("Couldn't connect to mpris2 player via D-Bus in " + str(MPRIS2_CONNECT_TIMEOUT) + "s, giving up! \n" \
 		+ " You can increase the MPRIS2_CONNECT_TIMEOUT in the config file. \n" \
