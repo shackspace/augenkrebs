@@ -29,10 +29,14 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 		post   = urllib.parse.parse_qs(s.rfile.read(length).decode('utf-8'))
 		
 		if "do" in post:
-			host = socket.gethostbyaddr(s.client_address[0])[0]
 			action = post["do"][0]
+			host = s.client_address[0]
 			
-			if action != "open": print(socket.gethostbyaddr(host) + ": " + action);
+			# not sure if this try catch is necessary
+			try: host = socket.gethostbyaddr(host)[0]
+			except: pass
+			
+			if action != "open": print(host + ": " + action);
 			
 			if action == "open" and "url" in post:
 				url = post["url"][0]
