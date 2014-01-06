@@ -7,6 +7,11 @@ from config import *
 from mpris2 import *
 import inspect
 import urllib
+import socket
+
+
+socket.setdefaulttimeout(2)
+
 
 # read http files to RAM
 pwd = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -24,14 +29,14 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 		post   = urllib.parse.parse_qs(s.rfile.read(length).decode('utf-8'))
 		
 		if "do" in post:
-			ip = s.client_address[0]
+			host = socket.gethostbyaddr(s.client_address[0])[0]
 			action = post["do"][0]
 			
-			if action != "open": print(ip + ": " + action);
+			if action != "open": print(socket.gethostbyaddr(host) + ": " + action);
 			
 			if action == "open" and "url" in post:
 				url = post["url"][0]
-				print(ip + " wants to watch: " +url+"\n" \
+				print(host + " wants to watch: " +url+"\n" \
 					+ "Trying to play this with " + player_name + " directly...")
 				player.OpenUri(url)
 				player.Play()
