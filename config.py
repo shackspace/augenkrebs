@@ -19,3 +19,4 @@ MPRIS2_CONNECT_TIMEOUT = 5 # seconds
 MPRIS2_PLAYER_CMD = "cvlc"
 MPRIS2_PLAYER_ARGS = ["-q", "-f"]
 MPRIS2_PLAYER_NAME = "org.mpris.MediaPlayer2.vlc" # D-Bus Address
+MPRIS2_SEEK_VALUE  = 10000000 # +/- 10 seconds

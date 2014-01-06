@@ -1,52 +1,46 @@
-var recommended =
-[
-	"http://youtube.com/watch?v=eQ6rfI28zJ4",
-	"http://vimeo.com/50747914",
-	"http://youtube.com/watch?v=VXCIQStE1rk",
-	"http://youtube.com/watch?v=lRY4-feFZZY",
-	
-];
-
 function $(a){return document.getElementById(a);}
 
-function xhr(url,callback)
+function xhr(url,callback,postvars)
 {
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", url, true);
+	xhr.open(postvars?"POST":"GET", url, true);
 	xhr.onreadystatechange = function()
 	{
 		if(xhr.readyState != 4) return;
 		if(callback) return callback(xhr.responseText);
 	}
-	xhr.send();
+	xhr.send(postvars);
 }
-
-function random_link()
+function action_open()
 {
-	var index = Math.floor(Math.random()*recommended.length);
-	if($("videourl").value == recommended[index])
-		index++; if(index==recommended.length) index-=2;
-	$("videourl").value = recommended[index];
+	xhr("/",false,"do=open&url="+encodeURIComponent($("url").value));
 }
 
-function allowDrop(ev){
-	ev.preventDefault();
+function button_add(desc,action)
+{
+	var button = document.createElement("span");
+	button.className="button";
+	button.innerHTML=desc;
+	button.onclick = function()
+	{
+		if(action == "open") return action_open();
+		xhr("/",false,"do="+action);
+	}
+	$("buttons").appendChild(button);
 }
 
-function drop(ev){
-	ev.preventDefault();
-	var data=ev.dataTransfer.getData("Text");
-	var url = "/?do=Open&videourl="+encodeURIComponent(data);
-	xhr(url);
+function controls_draw()
+{
+	button_add("◃◃","seek_back");
+	button_add("▯▯","pause");
+	button_add("◽",	"stop");
+	button_add("▹▹","seek");
 }
 
 function init()
 {
-	$("home").href="#";
-	$("home").onclick=random_link;
-	if($("videourl").value == "" || recommended.indexOf($("videourl").value) == -1)
-		random_link();
-	
+	controls_draw();
+	/*
 	var buttons = $("buttons").getElementsByTagName("input");
 	for(var i=0;i<buttons.length;i++) {
 		buttons[i].type="button";
@@ -59,10 +53,25 @@ function init()
 			xhr(url);
 		};
 	}
-
+	*/
+/*
 	var dndtarget = $("droptarget");
 	dndtarget.style.display="block";
 	dndtarget.ondragover = allowDrop;
 	dndtarget.ondrop = drop;
+*/
 }
 init();
+
+
+/* TODO: reimplement drag n drop stuff */
+function allowDrop(ev){
+	ev.preventDefault();
+}
+
+function drop(ev){
+	ev.preventDefault();
+	var data=ev.dataTransfer.getData("Text");
+	var url = "/?do=Open&videourl="+encodeURIComponent(data);
+	xhr(url);
+}

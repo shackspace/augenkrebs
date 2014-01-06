@@ -22,11 +22,14 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 	def do_POST(s):
 		length = int(s.headers['Content-Length'])
 		post   = urllib.parse.parse_qs(s.rfile.read(length).decode('utf-8'))
+		
 		if "do" in post:
 			ip = s.client_address[0]
 			action = post["do"][0]
 			
-			if action == "Open" and "url" in post:
+			if action != "open": print(ip + ": " + action);
+			
+			if action == "open" and "url" in post:
 				url = post["url"][0]
 				print(ip + " wants to watch: " +url+"\n" \
 					+ "Trying to play this with " + player_name + " directly...")
@@ -42,8 +45,10 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 					print("Success! Buffering might take some time though.")
 			
 			
-			elif action == "Pause": player.PlayPause()
-			elif action == "Stop":  player.Stop()
+			elif action == "pause":		player.PlayPause()
+			elif action == "stop":		player.Stop()
+			elif action == "seek":		player.Seek(MPRIS2_SEEK_VALUE)
+			elif action == "seek_back":	player.Seek(-1*MPRIS2_SEEK_VALUE)
 		
 		s.do_GET() # return index.html
 	# Static files

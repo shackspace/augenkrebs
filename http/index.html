@@ -2,35 +2,22 @@
 <html>
 	<head>
 		<title>byteplayer</title>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-		<link rel="stylesheet" type="text/css" href="style.css">
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
 	</head>
 	<body id="body">
 		<a id="home" href="/">byteplayer</a>
 		<div>
-			<form name="video_form" method="post" target="/do"><!-- onsubmit="$('open').onclick();return false">-->
-				<input type="text" name="url" id="url" onclick="this.select()"
-					placeholder="http://youtube.com/blubb"
-				>
+			<form name="video_form" method="post" onsubmit="action_open();return false">
+				<input type="text" name="url" id="url" onclick="this.value=''"
+					placeholder="http://youtube.com/watch?v=eQ6rfI28zJ4"
+				><br>
+				<input type="submit" name="do" value="Open" id="open"/>
 				<div id="buttons">
-					<input type="submit" name="do" value="Open" id="open">
-					<input type="submit" name="do" value="Pause">
-					<input type="submit" name="do" value="Stop">
+					<!-- play: ▻ or ▷-->
 				</div>
 			</form>
 		</div>
-		<!--
-		
-		TODO: reimplement!
-		
-		<div id="droptarget">
-			Feel free to drag URLs and drop them here.
-		</div>
-		<div>
-			<form method="get" action="/powermanagement">
-				<input type="submit" class="button" name="action" value="suspend">
-			</form>
-		</div>
-		<script src="byteplayer.js" lang="text/javascript"></script>-->
+		<script src="byteplayer.js" lang="text/javascript"></script>
 	</body>
 </html>
