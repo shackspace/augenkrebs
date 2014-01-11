@@ -1,6 +1,17 @@
-body {
+body
+{
   font-family: sans-serif;
   text-align: center;
+}
+
+#slider_container
+{
+	display: none;
+	margin-top: 20px;
+}
+#slider
+{
+	width: 300px;
 }
 
 #home
@@ -76,7 +87,8 @@ body {
 	top:1px;
 }
 
-#droptarget{
+#droptarget
+{
 	display:none; /* this will be changed from JS, so the drop target is only visible if we may use JS */
 	padding-top:5em;
 	padding-bottom:5em;
@@ -90,6 +102,7 @@ body {
 	border-color:white;
 }
 
-#droptarget:hover{
+#droptarget:hover
+{
 	border-color:grey;
 }

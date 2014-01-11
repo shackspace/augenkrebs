@@ -8,6 +8,7 @@ from mpris2 import *
 import inspect
 import urllib
 import socket
+import json
 
 
 socket.setdefaulttimeout(2)
@@ -45,8 +46,8 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 				player.OpenUri(url)
 				player.Play()
 				
-				status = mpris2_status()
 				time.sleep(0.6)
+				status = mpris2_get("PlaybackStatus")
 				if status == "Stopped":
 					print("STUB: " + player_name + " can't play this directly.\n" \
 					+ "STUB: Livestreamer etc. support isn't (re-)implemented yet.")
@@ -58,6 +59,10 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 			elif action == "stop":		player.Stop()
 			elif action == "seek":		player.Seek(MPRIS2_SEEK_VALUE)
 			elif action == "seek_back":	player.Seek(-1*MPRIS2_SEEK_VALUE)
+			elif action == "set_pos":	print("STUB: Seeking via the seekbar isn't implemented yet, use the buttons below for now.")
+				# This would be the right way, but VLC crashes
+				# player.SetPosition(post["val"][0])
+				
 		
 		s.do_GET() # return index.html
 	# Static files
@@ -66,7 +71,13 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 		s.end_headers()
 		
 		if s.path == "/": s.path = "/index.html"
-		if s.path in files: s.wfile.write(files[s.path])
+		if s.path == "/status":
+			s.wfile.write(bytes(json.dumps({
+				"meta": mpris2_get("Metadata"),
+				"pos":  mpris2_get("Position"),
+				"vol":  float(mpris2_get("Volume"))
+			}),"UTF-8"))
+		elif s.path in files: s.wfile.write(files[s.path])
 		else:
 			s.wfile.write(bytes("404","UTF-8"))
 	def log_message(self, format, *args):

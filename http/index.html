@@ -11,8 +11,19 @@
 			<form name="video_form" method="post" onsubmit="action_open();return false">
 				<input type="text" name="url" id="url" onclick="this.value=''"
 					placeholder="http://youtube.com/watch?v=eQ6rfI28zJ4"
-				><br>
+				>
+				<br>
 				<input type="submit" name="do" value="Open" id="open"/>
+				
+				<br>
+				
+				<div id="slider_container">
+					<span id="playpos"></span>
+					<input type="range" id="slider" onclick="slider_set(this,'pos')">
+					<span id="endpos"></span>
+				</div>
+				
+				
 				<div id="buttons">
 					<!-- play: ▻ or ▷-->
 				</div>

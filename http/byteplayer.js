@@ -29,6 +29,11 @@ function button_add(desc,action)
 	$("buttons").appendChild(button);
 }
 
+function slider_set(obj,key)
+{
+	xhr("/", false, "do=set_"+key+"&val="+obj.value);
+}
+
 function controls_draw()
 {
 	button_add("◃◃","seek_back");
@@ -37,9 +42,45 @@ function controls_draw()
 	button_add("▹▹","seek");
 }
 
+function two_digits(num)
+{
+	return num<10?"0"+num:num;
+}
+
+function format_time(timestamp)
+{
+	var seconds = Math.floor(timestamp / 1000000);
+	var minutes = Math.floor(seconds / 60);
+	seconds = seconds % 60;
+	return two_digits(minutes)+":"+two_digits(seconds);
+}
+
 function init()
 {
 	controls_draw();
+	setInterval(function()
+	{
+		xhr("/status",function(answer)
+		{
+			try {answer = JSON.parse(answer);} catch(e){return;}
+			$("slider_container").style.display = answer.pos?"block":"none";
+			if(!answer.pos) return;
+			
+			var current = answer.pos;
+			var end     = answer.meta["mpris:length"];
+			
+			
+			$("slider").value	= current;
+			$("slider").max		= end;
+			
+			$("playpos").innerHTML = format_time(current);
+			$("endpos").innerHTML  = format_time(end);
+			
+			
+		});
+	},1000);
+	
+	
 	/*
 	var buttons = $("buttons").getElementsByTagName("input");
 	for(var i=0;i<buttons.length;i++) {

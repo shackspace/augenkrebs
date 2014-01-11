@@ -34,5 +34,9 @@ print("Connected to: " + player_name)
 
 
 
-def mpris2_status():
-	return prop.Get('org.mpris.MediaPlayer2.Player', 'PlaybackStatus')
+def mpris2_get(what):
+	return prop.Get('org.mpris.MediaPlayer2.Player', what)
+
+
+
+
