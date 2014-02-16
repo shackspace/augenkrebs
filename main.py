@@ -5,6 +5,7 @@ import os
 import http.server
 from config import *
 from mpris2 import *
+import history
 import inspect
 import urllib
 import socket
@@ -21,6 +22,8 @@ for filename in os.listdir(pwd + "/http"):
 	with open(pwd+'/http/'+filename, 'r') as f:
 		content = bytes(f.read(),"UTF-8")
 	files["/"+filename] = content
+
+hist = history.history()
 
 # This is the server code
 class byteplayer(http.server.BaseHTTPRequestHandler):
@@ -41,6 +44,7 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 			
 			if action == "open" and "url" in post:
 				url = post["url"][0]
+				hist.append(url)
 				print(host + " wants to watch: " +url+"\n" \
 					+ "Trying to play this with " + player_name + " directly...")
 				player.OpenUri(url)
