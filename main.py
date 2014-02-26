@@ -47,9 +47,11 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 				hist.append(url)
 				print(host + " wants to watch: " +url+"\n" \
 					+ "Trying to play this with " + player_name + " directly...")
-				player.OpenUri(url)
-				player.Play()
-				
+				tracklist_len_before = len(get_tracklist())
+				append_to_tracklist(url)
+				if tracklist_len_before == 0:
+					player.Play()
+
 				time.sleep(0.6)
 				status = mpris2_get("PlaybackStatus")
 				if status == "Stopped":
@@ -79,7 +81,8 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 			s.wfile.write(bytes(json.dumps({
 				"meta": mpris2_get("Metadata"),
 				"pos":  mpris2_get("Position"),
-				"vol":  float(mpris2_get("Volume"))
+				"vol":  float(mpris2_get("Volume")),
+				"tracklist": get_tracklist_urls()
 			}),"UTF-8"))
 		elif s.path in files: s.wfile.write(files[s.path])
 		else:
