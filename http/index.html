@@ -19,7 +19,7 @@
 				
 				<div id="slider_container">
 					<span id="playpos"></span>
-					<input type="range" id="slider" onclick="slider_set(this,'pos')">
+					<input type="range" id="slider" onclick="slider_set(this,'pos')"/>
 					<span id="endpos"></span>
 				</div>
 				
@@ -27,7 +27,15 @@
 				<div id="buttons">
 					<!-- play: ▻ or ▷-->
 				</div>
+
 			</form>
+
+			<div id="tracklist_container">
+				current tracklist:
+				<ul id="tracklist">
+				</ul>
+			</div>
+
 		</div>
 		<script src="byteplayer.js" lang="text/javascript"></script>
 	</body>

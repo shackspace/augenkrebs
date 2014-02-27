@@ -57,26 +57,35 @@ function format_time(timestamp)
 
 function init()
 {
+	$("url").focus();
 	controls_draw();
 	setInterval(function()
 	{
 		xhr("/status",function(answer)
 		{
 			try {answer = JSON.parse(answer);} catch(e){return;}
+
+			var dom_tracklist = $("tracklist");
+			dom_tracklist.innerHTML = "";
+			var tracklist = answer.tracklist
+			for(var i=0;i<tracklist.length;++i){
+				var list_elem = document.createElement('li');
+				list_elem.appendChild(document.createTextNode(tracklist[i]));
+				console.log("iterating over tracklist: " + tracklist[i]);
+				dom_tracklist.appendChild(list_elem);
+			}
+
 			$("slider_container").style.display = answer.pos?"block":"none";
 			if(!answer.pos) return;
 			
 			var current = answer.pos;
 			var end     = answer.meta["mpris:length"];
 			
-			
 			$("slider").value	= current;
 			$("slider").max		= end;
 			
 			$("playpos").innerHTML = format_time(current);
 			$("endpos").innerHTML  = format_time(end);
-			
-			
 		});
 	},1000);
 	

@@ -19,9 +19,12 @@ socket.setdefaulttimeout(2)
 pwd = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 files = {}
 for filename in os.listdir(pwd + "/http"):
-	with open(pwd+'/http/'+filename, 'r') as f:
-		content = bytes(f.read(),"UTF-8")
-	files["/"+filename] = content
+	try:
+		with open(pwd+'/http/'+filename, 'r') as f:
+			content = bytes(f.read(),"UTF-8")
+		files["/"+filename] = content
+	except Exception as e:
+		print("WARNING: Can't read file "+filename+" (please clean up the http folder :p)")
 
 hist = history.history()
 
