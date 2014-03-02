@@ -1,18 +1,11 @@
 body
 {
-  font-family: sans-serif;
-  text-align: center;
+	font-family: sans-serif;
+	text-align: center;
 }
 
-#slider_container
-{
-	display: none;
-	margin-top: 20px;
-}
-#slider
-{
-	width: 300px;
-}
+
+/* stuff at the top */
 
 #home
 {
@@ -36,27 +29,10 @@ body
 	font-size: 15pt;
 }
 
-#buttons
-{
-	padding: 20px;
-	cursor: default;
-}
 
-.button
-{
-	display: inline-block;
-	padding: 5px;
-	color: #333;
-	font-size: 20pt;
-	text-align: center;
-	line-height: 30pt;
-}
 
-.button:hover
-{
-	color: red;
-	font-size: 25pt;
-}
+
+/* line directly below the URL input field */
 
 #open
 {
@@ -86,6 +62,77 @@ body
 	position:relative;
 	top:1px;
 }
+
+
+
+
+
+
+/* position slider */
+
+#slider_container
+{
+	display: none;
+	margin-top: 20px;
+}
+#slider
+{
+	width: 300px;
+}
+
+
+/* playback control buttons */
+#playback_controls
+{
+	width: 275px;
+	margin: 0px auto 50px auto;
+	height: 30px;
+}
+#buttons
+{
+	float: left;
+	cursor: default;
+}
+
+.button
+{
+	display: inline-block;
+	padding: 5px;
+	color: #333;
+	font-size: 20pt;
+	text-align: center;
+	line-height: 30pt;
+}
+
+.button:hover
+{
+	color: red;
+	font-size: 25pt;
+}
+
+
+#volume_slider_container
+{
+	border-left: 1px dashed gray;
+	margin-top: 15px;
+	float: right;
+}
+
+#volume
+{
+	padding-left: 5px;
+}
+
+#volume_slider
+{
+	width: 50px;
+}
+
+
+
+
+
+/* droptarget */
 
 #droptarget
 {

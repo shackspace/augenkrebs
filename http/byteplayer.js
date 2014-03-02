@@ -34,6 +34,7 @@ function slider_set(obj,key)
 	xhr("/", false, "do=set_"+key+"&val="+obj.value);
 }
 
+
 function controls_draw()
 {
 	button_add("◃◃","seek_back");
@@ -71,11 +72,14 @@ function init()
 			for(var i=0;i<tracklist.length;++i){
 				var list_elem = document.createElement('li');
 				list_elem.appendChild(document.createTextNode(tracklist[i]));
-				console.log("iterating over tracklist: " + tracklist[i]);
 				dom_tracklist.appendChild(list_elem);
 			}
 
 			$("slider_container").style.display = answer.pos?"block":"none";
+
+			$("volume").innerHTML  = Math.floor(answer.vol*100)+"%";
+			$("volume_slider").value = answer.vol*100;
+
 			if(!answer.pos) return;
 			
 			var current = answer.pos;

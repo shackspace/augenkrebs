@@ -71,6 +71,8 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 			elif action == "set_pos":	print("STUB: Seeking via the seekbar isn't implemented yet, use the buttons below for now.")
 				# This would be the right way, but VLC crashes
 				# player.SetPosition(post["val"][0])
+			elif action == "set_vol":
+				mpris2_set("Volume", float(post["val"][0]) / 100 )
 				
 		
 		s.do_GET() # return index.html

@@ -38,6 +38,10 @@ print("Connected to: " + player_name)
 def mpris2_get(what):
 	return prop.Get('org.mpris.MediaPlayer2.Player', what)
 
+def mpris2_set(what,value):
+	return prop.Set('org.mpris.MediaPlayer2.Player', what, value)
+
+
 def append_to_tracklist(url):
 	last_track = get_tracklist()[-1:]
 	last_track = no_track if not last_track else last_track[0]
