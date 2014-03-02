@@ -4,11 +4,13 @@ import os
 import subprocess
 import time
 from sys import stderr
+import atexit
 
 
 # Open the MPRIS2 player and connect to it via DBUS/MPRIS2
 os.environ['DISPLAY'] = DISPLAY
 player_process = subprocess.Popen([MPRIS2_PLAYER_CMD] + MPRIS2_PLAYER_ARGS)
+atexit.register(player_process.terminate) 
 
 
 # Try to connect to DBUS with a timeout
