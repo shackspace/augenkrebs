@@ -50,9 +50,8 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 				hist.append(url)
 				print(host + " wants to watch: " +url+"\n" \
 					+ "Trying to play this with " + player_name + " directly...")
-				tracklist_len_before = len(get_tracklist())
 				append_to_tracklist(url)
-				if tracklist_len_before == 0:
+				if mpris2_get("PlaybackStatus") == "Stopped":
 					player.Play()
 
 				time.sleep(0.6)

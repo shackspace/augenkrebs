@@ -51,7 +51,11 @@ def get_tracklist():
 
 def get_tracklist_titles():
 	""" Returns a list of all track titles from the current TrackList. """
-	track_url_list = []
+	track_title_list = []
 	for track_metadata in track_list.GetTracksMetadata(get_tracklist()):
-		track_url_list.append(str(track_metadata[dbus.String('xesam:title')]))
-	return track_url_list
+		try:
+			track_title = str(track_metadata[dbus.String('xesam:title')])
+		except:
+			track_title = str(track_metadata[dbus.String('xesam:url')])
+		track_title_list.append(track_title)
+	return track_title_list
