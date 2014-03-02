@@ -49,9 +49,9 @@ def get_tracklist():
 	tracklist = prop.Get('org.mpris.MediaPlayer2.TrackList','Tracks')
 	return tracklist
 
-def get_tracklist_urls():
-	""" Returns a list of all track URLs from the current TrackList. """
+def get_tracklist_titles():
+	""" Returns a list of all track titles from the current TrackList. """
 	track_url_list = []
 	for track_metadata in track_list.GetTracksMetadata(get_tracklist()):
-		track_url_list.append(str(track_metadata[dbus.String('xesam:url')]))
+		track_url_list.append(str(track_metadata[dbus.String('xesam:title')]))
 	return track_url_list

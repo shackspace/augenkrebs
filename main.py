@@ -85,7 +85,7 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 				"meta": mpris2_get("Metadata"),
 				"pos":  mpris2_get("Position"),
 				"vol":  float(mpris2_get("Volume")),
-				"tracklist": get_tracklist_urls()
+				"tracklist": get_tracklist_titles()
 			}),"UTF-8"))
 		elif s.path in files: s.wfile.write(files[s.path])
 		else:
