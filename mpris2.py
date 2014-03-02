@@ -4,11 +4,13 @@ import os
 import subprocess
 import time
 from sys import stderr
+import atexit
 
 
 # Open the MPRIS2 player and connect to it via DBUS/MPRIS2
 os.environ['DISPLAY'] = DISPLAY
 player_process = subprocess.Popen([MPRIS2_PLAYER_CMD] + MPRIS2_PLAYER_ARGS)
+atexit.register(player_process.terminate) 
 
 
 # Try to connect to DBUS with a timeout
@@ -51,9 +53,13 @@ def get_tracklist():
 	tracklist = prop.Get('org.mpris.MediaPlayer2.TrackList','Tracks')
 	return tracklist
 
-def get_tracklist_urls():
-	""" Returns a list of all track URLs from the current TrackList. """
-	track_url_list = []
+def get_tracklist_titles():
+	""" Returns a list of all track titles from the current TrackList. """
+	track_title_list = []
 	for track_metadata in track_list.GetTracksMetadata(get_tracklist()):
-		track_url_list.append(str(track_metadata[dbus.String('xesam:url')]))
-	return track_url_list
+		try:
+			track_title = str(track_metadata[dbus.String('xesam:title')])
+		except:
+			track_title = str(track_metadata[dbus.String('xesam:url')])
+		track_title_list.append(track_title)
+	return track_title_list
