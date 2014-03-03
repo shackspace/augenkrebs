@@ -51,8 +51,6 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 				print(host + " wants to watch: " +url+"\n" \
 					+ "Trying to play this with " + player_name + " directly...")
 				append_to_tracklist(url)
-				if mpris2_get("PlaybackStatus") == "Stopped":
-					player.Play()
 
 				time.sleep(0.6)
 				status = mpris2_get("PlaybackStatus")
