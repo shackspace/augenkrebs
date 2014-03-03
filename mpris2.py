@@ -48,6 +48,9 @@ def mpris2_set(what,value):
 def append_to_tracklist(url):
 	_tracklist.put(url)
 
+def delete_from_tracklist(index):
+	del _tracklist.queue[index]
+
 def get_tracklist():
 	return list(_tracklist.queue) #attention, this depends on the implementation of queue.Queue
 
@@ -71,11 +74,11 @@ def queue_thread_fun():
 			current_track_length = mpris2_get("Metadata")[dbus.String("mpris:length")]
 			pos = mpris2_get("Position")
 			remaining = (current_track_length - pos)/(10**6) #convert from μs to s
+		except KeyError:
+			remaining = 0
 		except Exception as e:
 			print("queue_thread caught exception ")
 			print(e)
-			remaining = 0
-			time.sleep(2)
 			continue
 		if remaining >= 0 and remaining <= 2:
 			time.sleep(remaining+0.1) #sleep for the remaining duration of the track plus 0.1 seconds
@@ -86,4 +89,3 @@ def queue_thread_fun():
 queue_thread = threading.Thread(target=queue_thread_fun)
 queue_thread.daemon = True
 queue_thread.start()
-
