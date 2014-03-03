@@ -56,6 +56,18 @@ function format_time(timestamp)
 	return two_digits(minutes)+":"+two_digits(seconds);
 }
 
+function generate_tracklist_item(text,index){
+	var list_elem = document.createElement('li');
+	list_elem.appendChild(document.createTextNode(text));
+	var delbutton = document.createElement('button');
+	delbutton.textContent = "delete";
+	delbutton.onclick = function(){
+		xhr("/", false, "do=delete_from_tracklist&index="+index);
+	}
+	list_elem.appendChild(delbutton);
+	return list_elem;
+}
+
 function init()
 {
 	$("url").focus();
@@ -70,8 +82,7 @@ function init()
 			dom_tracklist.innerHTML = "";
 			var tracklist = answer.tracklist
 			for(var i=0;i<tracklist.length;++i){
-				var list_elem = document.createElement('li');
-				list_elem.appendChild(document.createTextNode(tracklist[i]));
+				var list_elem = generate_tracklist_item(tracklist[i],i);
 				dom_tracklist.appendChild(list_elem);
 			}
 

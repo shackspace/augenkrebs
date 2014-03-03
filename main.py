@@ -61,8 +61,10 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 					print("Success! Buffering might take some time though.")
 			
 			
-			elif action == "pause":		player.PlayPause()
-			elif action == "stop":		player.Stop()
+			elif action == "pause":		
+				allow_playback()
+				player.PlayPause()
+			elif action == "stop":		stop_playback()
 			elif action == "seek":		player.Seek(MPRIS2_SEEK_VALUE)
 			elif action == "seek_back":	player.Seek(-1*MPRIS2_SEEK_VALUE)
 			elif action == "set_pos":	print("STUB: Seeking via the seekbar isn't implemented yet, use the buttons below for now.")
@@ -70,6 +72,8 @@ class byteplayer(http.server.BaseHTTPRequestHandler):
 				# player.SetPosition(post["val"][0])
 			elif action == "set_vol":
 				mpris2_set("Volume", float(post["val"][0]) / 100 )
+			elif action == "delete_from_tracklist":
+				delete_from_tracklist(int(post["index"][0]))
 				
 		
 		s.do_GET() # return index.html

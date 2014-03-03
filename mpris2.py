@@ -66,6 +66,18 @@ def get_tracklist_titles():
 	#	track_title_list.append(track_title)
 	#return track_title_list
 
+_playbacklock = threading.Lock()
+
+def stop_playback():
+	_playbacklock.acquire(blocking=False)
+	player.Stop()
+
+def allow_playback():
+	try:
+		_playbacklock.release()
+	except RuntimeError:
+		pass
+
 _tracklist = queue.Queue()
 
 def queue_thread_fun():
@@ -82,7 +94,12 @@ def queue_thread_fun():
 			continue
 		if remaining >= 0 and remaining <= 2:
 			time.sleep(remaining+0.1) #sleep for the remaining duration of the track plus 0.1 seconds
+			_playbacklock.acquire()
 			player.OpenUri(_tracklist.get()) #play next track
+			try:
+				_playbacklock.release()
+			except RuntimeError:
+				pass
 		else:
 			time.sleep(2) #sleep for two seconds, then poll again
 
