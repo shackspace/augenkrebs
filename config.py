@@ -1,3 +1,7 @@
+# TODO: remove mplayer related variables
+# TODO: add prefix to config variables
+
+PORT=1337
 DISPLAY = ":0"
 TEMPLATEDIR = "templates"
 COOKIEFILE = "/tmp/byteplayer_cookies"
@@ -8,3 +12,11 @@ MPLAYERARGS = ["--fs","--slave", "--input=file="+MPLAYER_PIPE_NAME, "--cache=320
 YOUTUBEDLARGS = ["--get-url","--cookies",COOKIEFILE]
 LIVESTREAMERARGS = ["best","--verbose-player","--player-passthrough","hls,http,rtmp","-p",' '.join(["mplayer2"] + MPLAYERARGS)]
 SUSPEND_COMMAND = ["echo","please configure the proper command for suspend to ram"] #["sudo","pm-suspend"]
+
+
+# The player gets started up at the start of the script
+MPRIS2_CONNECT_TIMEOUT = 5 # seconds
+MPRIS2_PLAYER_CMD = "cvlc"
+MPRIS2_PLAYER_ARGS = ["-q", "-f", "-I", "dbus"]
+MPRIS2_PLAYER_NAME = "org.mpris.MediaPlayer2.vlc" # D-Bus Address
+MPRIS2_SEEK_VALUE  = 10000000 # +/- 10 seconds

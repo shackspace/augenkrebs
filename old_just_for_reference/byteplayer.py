@@ -6,14 +6,14 @@ import subprocess
 sys.path.append(os.path.dirname(__file__))
 
 from config import *
+from mpris2 import *
 render = web.template.render(TEMPLATEDIR)
 
 class byteplayer:
-	def __init__(self):
-		os.environ['DISPLAY'] = DISPLAY # maybe it's sufficient to only set this once, e.g. during program startup
-		if not os.path.exists(MPLAYER_PIPE_NAME):
-			os.mkfifo(MPLAYER_PIPE_NAME)
-	
+	def quit(self):
+		# close mpris2 player via dbus!
+		print "STUB"
+		
 	def GET(self,url):
 		params = web.input()
 		try:
@@ -49,19 +49,32 @@ class byteplayer:
 		subprocess.Popen(commandline)
 
 	def open(self,url):
-		self.stop() #before opening a new video, stop any video potentially still running
+		#self.stop() #before opening a new video, stop any video potentially still running
 		#TODO implement timeouts for calls to video URL processors like youtube-dl
-		for playfunc in [self.youtubedl_play,self.livestreamer_play,self.plainurl_play]:
-			try:
-				playfunc(url)
-				break
-			except:
-				continue
+		#for playfunc in [self.youtubedl_play,self.livestreamer_play,self.plainurl_play]:
+		#	try:
+		#		playfunc(url)
+		#		break
+		#	except:
+		#		continue
+		
+		
+		print "Someone wants to watch: " +url
+		print "Trying to play this with " + player_name + " directly..."
+		player.OpenUri(url)
+		player.Play()
+		
+		status = mpris2_status()
+		if status == "Stopped":
+			print "STUB: " + player_name + " can't play this directly."
+			print "STUB: Livestreamer etc. support isn't (re-)implemented yet."
+		else:
+			print "Success! Buffering might take some time though."
 	
 	def stop(self):
-		subprocess.call(["killall","-q","-9",MPLAYER])
+		player.Stop()
 
 	def pause(self):
-		pipein = open(MPLAYER_PIPE_NAME,'w')
-		pipein.write('pause\n')
-		pipein.close()
+		player.PlayPause()
+	def log_message(self, format, *args):
+		return
