@@ -1,5 +1,30 @@
-.row
-	.page-header(style="text-align: center;")
-		img(src='/img/logo.svg')
-		h1 augenkrebs
-		h2 Internetabspielgerät
+.container
+	form
+		.form-group.col-md-12
+			.input-group
+				input.form-control(type='text', placeholder='url')
+				.input-group-btn
+					button.btn.btn-primary(type='submit') Open
+
+		.form-group
+			.text-center
+				.btn-group.btn-group-lg
+					button.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-step-backward
+					button.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-fast-backward
+					button.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-backward
+					button.btn.btn-default(type='button', style='color: green')
+						span.glyphicon.glyphicon-play
+					button.btn.btn-default(type='button', style='color: blue')
+						span.glyphicon.glyphicon-pause
+					button.btn.btn-default(type='button', style='color: red')
+						span.glyphicon.glyphicon-stop
+					button.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-forward
+					button.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-fast-forward
+					button.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-step-forward
+					
