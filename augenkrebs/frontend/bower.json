@@ -10,9 +10,13 @@
     "bootstrap": "~3",
     "moment": "~2.4",
     "normalize-css": "~2.1.2",
-    "h5bp-helpers": "~0.1.0"
+    "h5bp-helpers": "~0.1.0",
+    "seiyria-bootstrap-slider": "~3.1.0"
   },
   "overrides": {
+    "modernizr": {
+      "main":["modernizr.js"]
+    },
     "backbone": {
       "dependencies": {
         "lodash": "*",
@@ -28,6 +32,17 @@
         "dist/js/bootstrap.js",
         "dist/css/bootstrap.css",
         "dist/fonts/*"
+      ]
+    },
+    "seiyria-bootstrap-slider": {
+      "dependencies": {
+        "jquery": "*",
+        "bootstrap": "*",
+        "modernizr": "*"
+      },
+      "main": [
+        "dist/bootstrap-slider.min.js",
+        "dist/css/bootstrap-slider.css"
       ]
     }
   }

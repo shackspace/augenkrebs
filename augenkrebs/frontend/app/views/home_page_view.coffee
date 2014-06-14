@@ -56,3 +56,11 @@ module.exports = class HomePageView extends View
 	fastBackward: (event) =>
 		event.preventDefault()
 		@trigger 'fast-backward'
+
+	render: =>
+		super
+		@$('#position').slider
+			min: 0
+			max: 3600
+			step: 1
+			handle: 'custom'
