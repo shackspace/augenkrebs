@@ -19,6 +19,13 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view, 'open', (url) =>
 			console.log 'open', url
+			$.ajax
+				url: '/api/open'
+				type: 'POST'
+				data: JSON.stringify
+					url: url
+				contentType: 'application/json'
+				dataType: 'json'
 
 		@listenTo @view, 'play', =>
 			console.log 'play'
