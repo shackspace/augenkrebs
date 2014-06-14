@@ -2,3 +2,8 @@
 *.swp
 *.orig
 
+
+# NPM packages folder.
+node_modules/
+
+bower_components/
