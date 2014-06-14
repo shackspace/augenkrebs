@@ -17,5 +17,5 @@ module.exports = class HomeController extends Controller
 	index: ->
 		@view = new HomePageView region: 'main'
 
-	index: ->
+	about: ->
 		@view = new AboutView region: 'main'
