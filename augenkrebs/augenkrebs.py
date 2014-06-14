@@ -4,7 +4,6 @@ from flask import Flask
 from flask import request
 from flask import send_from_directory
 from flask import abort
-from vlc import vlc
 from GlobalPlayer.global_player import global_queue
 from GlobalPlayer.global_player import GlobalThread
 import json
@@ -19,20 +18,11 @@ def augenkrebs():
 
 @app.route('/api/open', methods=['POST'])
 def api_open():
-#    bla = {"rand" : "h"}
-#    keks = str(request.json['url'])
-
-#    instance = vlc.Instance()
-#    player = instance.media_player_new()
-#    movie = request.json['url']
-#    media = instance.media_new(movie)
-#    player.set_media(media)
-#    player.play()
     try:
         local_queue = queue.Queue()
         global_queue.put({'action': 'open', 
                           'url': request.json['url'], 
-                          'response': local_queue)})
+                          'response': local_queue})
         return json.dumps(local_queue.get())
     except:
         abort(500)
