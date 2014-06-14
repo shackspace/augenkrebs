@@ -1,5 +1,6 @@
 Controller = require 'controllers/base/controller'
 HomePageView = require 'views/home_page_view'
+AboutView = require 'views/about_view'
 
 Header = require 'models/header'
 HeaderView = require 'views/header_view'
@@ -15,3 +16,6 @@ module.exports = class HomeController extends Controller
 
 	index: ->
 		@view = new HomePageView region: 'main'
+
+	index: ->
+		@view = new AboutView region: 'main'
