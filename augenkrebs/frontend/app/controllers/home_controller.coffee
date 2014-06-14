@@ -17,5 +17,36 @@ module.exports = class HomeController extends Controller
 	index: ->
 		@view = new HomePageView region: 'main'
 
+		@listenTo @view, 'open', (url) =>
+			console.log 'open', url
+
+		@listenTo @view, 'play', =>
+			console.log 'play'
+
+		@listenTo @view, 'pause', =>
+			console.log 'pause'
+
+		@listenTo @view, 'stop', =>
+			console.log 'stop'
+
+		@listenTo @view, 'next', =>
+			console.log 'next'
+
+		@listenTo @view, 'previous', =>
+			console.log 'previous'
+
+		@listenTo @view, 'forward', =>
+			console.log 'forward'
+
+		@listenTo @view, 'fast-forward', =>
+			console.log 'fast-forward'
+
+		@listenTo @view, 'backward', =>
+			console.log 'backward'
+
+		@listenTo @view, 'fast-backward', =>
+			console.log 'fast-backward'
+
+
 	about: ->
 		@view = new AboutView region: 'main'
