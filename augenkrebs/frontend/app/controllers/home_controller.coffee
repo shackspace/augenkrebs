@@ -20,12 +20,9 @@ module.exports = class HomeController extends Controller
 		setInterval ->
 			status.fetch
 				contentType: 'json'
-				success: ->
-					console.log 'joa'
-					
 				error: ->
 					console.log 'nope'
-		, 100
+		, 1000
 
 		# status.save {derp: 'herp'}
 		@view = new HomePageView
@@ -44,11 +41,13 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view, 'play', =>
 			console.log 'play'
-			status.set 'is_playing', true
+			status.save
+				'is_playing': true
 
 		@listenTo @view, 'pause', =>
 			console.log 'pause'
 			status.set 'is_playing', false
+			status.save()
 
 		@listenTo @view, 'stop', =>
 			console.log 'stop'
@@ -70,6 +69,10 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view, 'fast-backward', =>
 			console.log 'fast-backward'
+
+		@listenTo @view, 'seek', (position) =>
+			status.save
+				position: position
 
 
 	about: ->

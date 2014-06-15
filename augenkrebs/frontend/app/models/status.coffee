@@ -3,12 +3,12 @@ Model = require 'models/base/model'
 methodMap =
 	'read': 'GET'
 	'update': 'POST'
+	'create': 'POST'
 
 module.exports = class Status extends Model
 	url: '/api/status'
 	sync: (method, model, options) ->
 		type = methodMap[method]
-
 		return null unless type?
 
 		params =
@@ -30,3 +30,13 @@ module.exports = class Status extends Model
 
 		xhr = options.xhr = Backbone.ajax _.extend params, options
 		return xhr
+
+	save: (fields, options) =>
+		@writeLock = true
+		super fields,
+			complete: =>
+				@writeLock = false
+
+	fetch: (options) =>
+		return if @writeLock
+		super options
