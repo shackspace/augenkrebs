@@ -94,6 +94,11 @@ module.exports = class HomeController extends Controller
 			status.save
 				subtitle: sub
 
+		@listenTo @view, 'audiotrack', (track) =>
+			console.log 'audiotrack', track
+			status.save
+				audiotrack: track
+
 
 	about: ->
 		@view = new AboutView region: 'main'
