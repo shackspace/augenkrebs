@@ -68,7 +68,7 @@ module.exports = class HomePageView extends View
 		@trigger 'subtitles', $('#subtitles option:selected').val()
 
 	audiotrackList: (event) =>
-		@trigger 'audiotrackList', $('#audiotrack-list option:selected').val()
+		@trigger 'audiotrack-list', $('#audiotrack-list option:selected').val()
 
 	render: =>
 		super
