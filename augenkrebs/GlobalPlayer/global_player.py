@@ -54,6 +54,7 @@ class GlobalThread(threading.Thread):
         response_dict['is_playing'] = self.vlc_player.is_playing()
         response_dict['length'] = self.vlc_player.get_length()
         response_dict['position'] = self.vlc_player.get_time()
+        response_dict['title'] = self.vlc_player.get_mrl()
 
         response_dict['muted'] = self.vlc_player.audio_get_mute()
         response_dict['volume'] = self.vlc_player.audio_get_volume()
