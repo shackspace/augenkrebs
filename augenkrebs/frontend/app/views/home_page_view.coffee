@@ -64,3 +64,26 @@ module.exports = class HomePageView extends View
 			max: 3600
 			step: 1
 			handle: 'custom'
+
+	listen:
+		'change:is_playing model': 'changeIsPlaying'
+		'change:length model': 'changeLength'
+		'change:position model': 'changePosition'
+
+
+	changeIsPlaying: (model, field) =>
+
+	changeLength: (model, length) =>
+		slider = @$ '#position'
+		console.log model, length
+		if length is -1
+			slider.slider 'disable'
+		else
+			slider.slider 'enable' unless slider.slider 'isEnabled'
+			slider.slider 'setAttribute', 'max', length
+
+	changePosition: (model, pos) =>
+		return if pos is -1
+		slider = @$ '#position'
+		slider.slider 'setValue', pos
+
