@@ -41,16 +41,21 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view, 'play', =>
 			console.log 'play'
-			status.save
-				'is_playing': true
+			$.ajax
+				type: 'GET'
+				url: '/api/play'
 
 		@listenTo @view, 'pause', =>
 			console.log 'pause'
-			status.set 'is_playing', false
-			status.save()
+			$.ajax
+				type: 'GET'
+				url: '/api/pause'
 
 		@listenTo @view, 'stop', =>
 			console.log 'stop'
+			$.ajax
+				type: 'GET'
+				url: '/api/stop'
 
 		@listenTo @view, 'next', =>
 			console.log 'next'
