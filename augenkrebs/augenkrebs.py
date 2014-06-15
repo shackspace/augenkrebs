@@ -31,7 +31,9 @@ def api_open():
 @app.route('/api/status', methods=['GET', 'POST'])
 def api_status():
     if request.method == 'GET':
-        return 200
+        local_queue = queue.Queue()
+        global_queue.put({'action': 'get_status', 'response': local_queue})
+        return json.dumps(local_queue.get())
 
 if __name__ == '__main__':
     global_thread = GlobalThread(daemon=True)
