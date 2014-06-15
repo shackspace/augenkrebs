@@ -15,7 +15,19 @@ class GlobalThread(threading.Thread):
         while True:
             task = global_queue.get()
 
-            if task['action'] == 'open':
+            if task['action'] == 'play' and not self.vlc_player.is_playing():
+                self.vlc_player.play()
+                self.get_status(task['response'])
+
+            elif task['action'] == 'pause' and self.vlc_player.is_playing():
+                self.vlc_player.pause()
+                self.get_status(task['response'])
+
+            elif task['action'] == 'stop':
+                self.vlc_player.stop()
+                self.get_status(task['response'])
+
+            elif task['action'] == 'open':
                 #TODO: find good rule for recognizing stream vs file
                 if 'youtube' in task['url']:
                     task['response'].put({'status': 'trying'})
@@ -45,13 +57,19 @@ class GlobalThread(threading.Thread):
 
             elif task['action'] == 'get_status':
                 self.get_status(task['response'])
-            elif task['action'] == 'change_status':
-                pass
 
+            elif task['action'] == 'change_status':
+                self.change_status(task['request'])
+                self.get_status(task['response'])
+
+            else:
+                self.get_status(task['response'])
+                
     def get_status(self, response_queue):
+        #TODO: only return dict, don't call queue, but wth'
         response_dict = {}
 
-        response_dict['is_playing'] = self.vlc_player.is_playing()
+        response_dict['play_status'] = str(self.vlc_player.get_state()).split('.')[1]
         response_dict['length'] = self.vlc_player.get_length()
         response_dict['position'] = self.vlc_player.get_time()
         response_dict['title'] = self.vlc_player.get_media().get_mrl()
@@ -65,7 +83,11 @@ class GlobalThread(threading.Thread):
 
         response_dict['audiotrack_list'] = list(audio_dict.values())
         response_dict['audio_delay'] = self.vlc_player.audio_get_delay()
-        response_dict['audiotrack'] = audio_dict[self.vlc_player.audio_get_track()]
+
+        try:
+            response_dict['audiotrack'] = audio_dict[self.vlc_player.audio_get_track()]
+        except KeyError:
+            response_dict['audiotrack'] = ""
 
         subtitle_dict = {}
         for track in self.vlc_player.video_get_spu_description():
@@ -81,7 +103,25 @@ class GlobalThread(threading.Thread):
                 
         response_queue.put(response_dict)
         
-
+    def change_status(self, request):
+        #TODO: ALL the input sanitizing
+        for element in request.keys():
+            if element == 'position':
+                self.vlc_player.set_time(int(request[element]))
+            elif element == 'subtitle':
+                pass
+            elif element == 'subtitle_delay':
+                pass
+            elif element == 'audiotrack':
+                pass
+            elif element == 'audio_delay':
+                pass
+            elif element == 'volume':
+                pass
+            elif element == 'muted':
+                pass
+                
+        
 
 def callme(*args):
     global_queue.put({'action': 'stream'})
