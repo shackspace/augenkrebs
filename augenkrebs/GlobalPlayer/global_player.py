@@ -54,29 +54,31 @@ class GlobalThread(threading.Thread):
         response_dict['is_playing'] = self.vlc_player.is_playing()
         response_dict['length'] = self.vlc_player.get_length()
         response_dict['position'] = self.vlc_player.get_time()
-        response_dict['title'] = self.vlc_player.get_mrl()
+        response_dict['title'] = self.vlc_player.get_media().get_mrl()
 
         response_dict['muted'] = self.vlc_player.audio_get_mute()
         response_dict['volume'] = self.vlc_player.audio_get_volume()
 
-        response_dict['audiotrack_list'] = [str(track[1].decode()) for track in \
-                self.vlc_player.audio_get_track_description()]
-        response_dict['audio_delay'] = self.vlc_player.audio_get_delay()
-        response_dict['audiotrack'] = response_dict['audiotrack_list'][self.vlc_player.audio_get_track()]
+        audio_dict = {}
+        for track in self.vlc_player.audio_get_track_description():
+            audio_dict[track[0]] = track[1].decode()
 
-        response_dict['subtitle_list'] = [track[1].decode() for track in \
-                self.vlc_player.video_get_spu_description()]
+        response_dict['audiotrack_list'] = list(audio_dict.values())
+        response_dict['audio_delay'] = self.vlc_player.audio_get_delay()
+        response_dict['audiotrack'] = audio_dict[self.vlc_player.audio_get_track()]
+
+        subtitle_dict = {}
+        for track in self.vlc_player.video_get_spu_description():
+            subtitle_dict[track[0]] = track[1].decode()
+
+        response_dict['subtitle_list'] = list(subtitle_dict.values())
         response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
 
         try:
-            response_dict['subtitle'] = response_dict['subtitle_list'][self.vlc_player.video_get_spu()]
-        except IndexError:
+            response_dict['subtitle'] = subtitle_dict[self.vlc_player.video_get_spu()]
+        except KeyError:
             response_dict['subtitle'] = ""
                 
-
-        for elem in response_dict.keys():
-            print(elem + " " + str(response_dict[elem]))
-
         response_queue.put(response_dict)
         
 
