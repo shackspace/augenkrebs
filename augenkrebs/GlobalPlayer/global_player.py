@@ -59,12 +59,12 @@ class GlobalThread(threading.Thread):
         response_dict['muted'] = self.vlc_player.audio_get_mute()
         response_dict['volume'] = self.vlc_player.audio_get_volume()
 
-        response_dict['audiotrack_list'] = [str(track[1]) for track in \
+        response_dict['audiotrack_list'] = [str(track[1].decode()) for track in \
                 self.vlc_player.audio_get_track_description()]
         response_dict['audio_delay'] = self.vlc_player.audio_get_delay()
         response_dict['audiotrack'] = self.vlc_player.audio_get_track()
 
-        response_dict['subtitle_list'] = [str(track[1]) for track in \
+        response_dict['subtitle_list'] = [track[1].decode() for track in \
                 self.vlc_player.video_get_spu_description()]
         response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
         response_dict['subtitle'] = self.vlc_player.video_get_spu()

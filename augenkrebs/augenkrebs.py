@@ -4,6 +4,7 @@ from flask import Flask
 from flask import request
 from flask import send_from_directory
 from flask import abort
+import flask
 from GlobalPlayer.global_player import global_queue
 from GlobalPlayer.global_player import GlobalThread
 import json
@@ -23,7 +24,7 @@ def api_open():
         global_queue.put({'action': 'open', 
                           'url': request.json['url'], 
                           'response': local_queue})
-        return json.dumps(local_queue.get())
+        return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
     except:
         abort(500)
 
@@ -33,7 +34,7 @@ def api_status():
     if request.method == 'GET':
         local_queue = queue.Queue()
         global_queue.put({'action': 'get_status', 'response': local_queue})
-        return json.dumps(local_queue.get())
+        return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
 
 if __name__ == '__main__':
     global_thread = GlobalThread(daemon=True)
