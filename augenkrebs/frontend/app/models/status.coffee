@@ -4,6 +4,7 @@ methodMap =
 	'read': 'GET'
 	'update': 'POST'
 	'create': 'POST'
+	'patch': 'POST'
 
 module.exports = class Status extends Model
 	url: '/api/status'
@@ -15,11 +16,9 @@ module.exports = class Status extends Model
 			type: type
 			dataType: 'json'
 			url: @url
-
-		if not options.data? and method is 'update'
+		if type is 'POST'
 			params.contentType = 'application/json'
-			params.data = JSON.stringify model.toJSON()
-
+			params.data = JSON.stringify options.attrs or model.toJSON(options)
 		# // Pass along `textStatus` and `errorThrown` from jQuery.
 		# var error = options.error;
 		# options.error = function(xhr, textStatus, errorThrown) {
@@ -34,9 +33,12 @@ module.exports = class Status extends Model
 	save: (fields, options) =>
 		@writeLock = true
 		super fields,
+			patch: true
 			complete: =>
 				@writeLock = false
 
 	fetch: (options) =>
 		return if @writeLock
 		super options
+
+	isNew: -> false

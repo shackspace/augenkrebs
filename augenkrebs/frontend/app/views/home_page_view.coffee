@@ -16,6 +16,7 @@ module.exports = class HomePageView extends View
 		'click #fast-forward': 'fastForward'
 		'click #backward': 'backward'
 		'click #fast-backward': 'fastBackward'
+		'click #muted': 'mute'
 
 	open: (event) =>
 		event.preventDefault()
@@ -57,22 +58,44 @@ module.exports = class HomePageView extends View
 		event.preventDefault()
 		@trigger 'fast-backward'
 
+	mute: (event) =>
+		event.preventDefault()
+		@trigger 'mute'
+
 	render: =>
 		super
-		slider = @$('#position').slider
+		posSlider = @$('#position').slider
 			min: 0
 			max: 3600
 			step: 1
 			handle: 'custom'
 			enabled: false
 
-		slider.on 'slide', (event) =>
+		slideEventHandler = (event) =>
 			@trigger 'seek', event.value
+
+		posSlider.on 'slideStop', slideEventHandler
+		posSlider.on 'slide', slideEventHandler
+
+		volSlider = @$('#volume').slider
+			min: 0
+			max: 150
+			step: 1
+			# handle: 'custom'
+			# enabled: false
+
+		volEventHandler = (event) =>
+			@trigger 'volume', event.value
+
+		volSlider.on 'slideStop', volEventHandler
+		volSlider.on 'slide', volEventHandler
 
 	listen:
 		'change:is_playing model': 'changeIsPlaying'
 		'change:length model': 'changeLength'
 		'change:position model': 'changePosition'
+		'change:volume model': 'changeVolume'
+		'change:muted model': 'changeMuted'
 
 
 	changeIsPlaying: (model, field) =>
@@ -89,4 +112,17 @@ module.exports = class HomePageView extends View
 		return if pos is -1
 		slider = @$ '#position'
 		slider.slider 'setValue', pos
+
+	changeVolume: (model, vol) =>
+		slider = @$ '#volume'
+		slider.slider 'setValue', vol
+
+	changeMuted: (model, muted) =>
+		if muted
+			$('#muted span').removeClass 'glyphicon-volume-off'
+			$('#muted span').addClass 'glyphicon-volume-up'
+		else
+			$('#muted span').removeClass 'glyphicon-volume-up'
+			$('#muted span').addClass 'glyphicon-volume-off'
+
 
