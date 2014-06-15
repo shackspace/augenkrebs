@@ -92,17 +92,17 @@ class GlobalThread(threading.Thread):
         except KeyError:
             response_dict['audiotrack'] = ""
 
-    subtitle_dict = {}
-    for track in self.vlc_player.video_get_spu_description():
-        subtitle_dict[track[0]] = track[1].decode()
+        subtitle_dict = {}
+        for track in self.vlc_player.video_get_spu_description():
+            subtitle_dict[track[0]] = track[1].decode()
 
-        response_dict['subtitle_list'] = list(subtitle_dict.values())
-        response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
+            response_dict['subtitle_list'] = list(subtitle_dict.values())
+            response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
 
-        try:
-            response_dict['subtitle'] = subtitle_dict[self.vlc_player.video_get_spu()]
-        except KeyError:
-            response_dict['subtitle'] = ""
+            try:
+                response_dict['subtitle'] = subtitle_dict[self.vlc_player.video_get_spu()]
+            except KeyError:
+                response_dict['subtitle'] = ""
                 
         response_queue.put(response_dict)
         

@@ -75,9 +75,19 @@ module.exports = class HomeController extends Controller
 		@listenTo @view, 'fast-backward', =>
 			console.log 'fast-backward'
 
+		@listenTo @view, 'mute', =>
+
+			console.log 'mute'
+			status.save
+				muted: +(not status.get('muted'))
+
 		@listenTo @view, 'seek', (position) =>
 			status.save
-				position: position
+					position: position
+
+		@listenTo @view, 'volume', (volume) =>
+			status.save
+					volume: volume
 
 
 	about: ->
