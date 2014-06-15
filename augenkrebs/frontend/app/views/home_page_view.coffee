@@ -18,6 +18,7 @@ module.exports = class HomePageView extends View
 		'click #fast-backward': 'fastBackward'
 		'click #muted': 'mute'
 		'change #subtitles': 'subtitles'
+		'change #audiotrack-list': 'audiotrackList'
 
 	open: (event) =>
 		event.preventDefault()
@@ -66,6 +67,9 @@ module.exports = class HomePageView extends View
 	subtitles: (event) =>
 		@trigger 'subtitles', $('#subtitles option:selected').val()
 
+	audiotrackList: (event) =>
+		@trigger 'audiotrackList', $('#audiotrack-list option:selected').val()
+
 	render: =>
 		super
 		posSlider = @$('#position').slider
@@ -102,6 +106,8 @@ module.exports = class HomePageView extends View
 		'change:muted model': 'changeMuted'
 		'change:subtitle_list model': 'changeSubtitleList'
 		'change:subtitle model': 'changeSubtitle'
+		'change:audiotrack_list model': 'changeAudiotrackList'
+		'change:audiotrack model': 'changeAudiotrack'
 
 
 	changeIsPlaying: (model, field) =>
@@ -140,8 +146,19 @@ module.exports = class HomePageView extends View
 				text: sub
 
 	changeSubtitle: (model, sub) =>
-		console.log $('#subtitles option[value="'+sub+'"]')
 		$('#subtitles option:selected').prop('selected', false)
 		$('#subtitles option[value="'+sub+'"]').prop('selected', true)
+
+	changeAudiotrackList: (model, list) =>
+		audiotracks = $('#audiotrack-list')
+		audiotracks.empty()
+		for track in list
+			audiotracks.append $ '<option>',
+				value: track
+				text: track
+
+	changeAudiotrack: (model, track) =>
+		$('#audiotrack-list option:selected').prop('selected', false)
+		$('#audiotrack-list option[value="'+track+'"]').prop('selected', true)
 
 
