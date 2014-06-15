@@ -9,6 +9,7 @@ class GlobalThread(threading.Thread):
         super(GlobalThread, self).__init__()
         self.vlc_instance = vlc.Instance()
         self.vlc_player = self.vlc_instance.media_player_new()
+        self.vlc_player.set_fullscreen(True)
 
 
     def run(self):
