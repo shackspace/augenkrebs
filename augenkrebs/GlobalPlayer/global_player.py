@@ -92,9 +92,9 @@ class GlobalThread(threading.Thread):
         except KeyError:
             response_dict['audiotrack'] = ""
 
-        subtitle_dict = {}
-        for track in self.vlc_player.video_get_spu_description():
-            subtitle_dict[track[0]] = track[1].decode()
+    subtitle_dict = {}
+    for track in self.vlc_player.video_get_spu_description():
+        subtitle_dict[track[0]] = track[1].decode()
 
         response_dict['subtitle_list'] = list(subtitle_dict.values())
         response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
@@ -111,19 +111,30 @@ class GlobalThread(threading.Thread):
         for element in request.keys():
             if element == 'position':
                 self.vlc_player.set_time(int(request[element]))
+
             elif element == 'subtitle':
-                pass
+                subtitle_dict = {}
+                for track in self.vlc_player.video_get_spu_description():
+                    subtitle_dict[track[1].decode()] = track[0]
+                self.vlc_player.video_set_spu(subtitle_dict[request[element]])
+
             elif element == 'subtitle_delay':
                 self.vlc_player.video_set_spu_delay(request[element])
+
             elif element == 'audiotrack':
-                pass
+                audio_dict = {}
+                for track in self.vlc_player.audio_get_track_description():
+                    audio_dict[track[1].decode()] = track[0]
+                self.vlc_player.audio_set_track(audio_dict[request[element]])
+
             elif element == 'audio_delay':
                 self.vlc_player.audio_set_delay(request[element])
+
             elif element == 'volume':
                 self.vlc_player.audio_set_volume(request[element])
+
             elif element == 'muted':
                 self.vlc_player.audio_set_mute(request[element])
-                
         
 
 def callme(*args):
