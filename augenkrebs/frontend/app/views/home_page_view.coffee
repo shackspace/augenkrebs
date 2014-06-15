@@ -125,11 +125,11 @@ module.exports = class HomePageView extends View
 
 	changeMuted: (model, muted) =>
 		if muted
-			$('#muted span').removeClass 'glyphicon-volume-off'
-			$('#muted span').addClass 'glyphicon-volume-up'
-		else
 			$('#muted span').removeClass 'glyphicon-volume-up'
 			$('#muted span').addClass 'glyphicon-volume-off'
+		else
+			$('#muted span').removeClass 'glyphicon-volume-off'
+			$('#muted span').addClass 'glyphicon-volume-up'
 
 	changeSubtitleList: (model, list) =>
 		subtitles = $('#subtitles')
