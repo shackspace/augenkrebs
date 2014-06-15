@@ -13,6 +13,8 @@ import queue
 app = Flask(__name__, static_url_path='', static_folder='frontend/public')
 
 @app.route('/')
+@app.route('/about')
+@app.route('/icon')
 def augenkrebs():
     return app.send_static_file('index.html')
 
