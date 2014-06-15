@@ -140,7 +140,6 @@ module.exports = class HomePageView extends View
 				text: sub
 
 	changeSubtitle: (model, sub) =>
-		console.log $('#subtitles option[value="'+sub+'"]')
 		$('#subtitles option:selected').prop('selected', false)
 		$('#subtitles option[value="'+sub+'"]').prop('selected', true)
 
