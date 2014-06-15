@@ -1,0 +1,72 @@
+// nib is a powerful lib for stylus that provides cross-browser css3 mixins.
+// No more vendor prefixes. http://visionmedia.github.com/nib/
+@import 'nib'
+
+// Apply a natural box layout model to all elements.
+// http://paulirish.com/2012/box-sizing-border-box-ftw/
+
+// Kills bootstrap
+
+//*
+//  box-sizing: border-box
+
+.big-logo
+	width 50%
+	animation slide 6s linear infinite
+
+.icon-page
+	position absolute
+	top 0
+	left 0
+	width 100%
+	height 100%
+	display table
+	background-color black
+
+	.center
+		display table-cell
+		vertical-align middle
+		text-align center
+
+	.huge-logo
+		
+		width 50%
+		animation slide 10s linear infinite
+		
+
+.navbar-brand img:hover
+	animation slide 6s linear infinite
+
+
+@keyframes slide {
+	0%{transform: rotateY(0deg)}
+	100%{transform: rotateY(720deg)}
+}
+
+.position
+	.slider.slider-horizontal
+		width 100%
+		
+
+		.slider-track
+			height 25px
+			background-image none
+			background-color #A00
+
+		.slider-selection
+			background-image none
+			background-color red
+
+		.slider-handle
+			height 35px
+			border-radius 10%
+			background-image none
+			background-color black
+			opacity 1
+
+			&:before
+				content none
+
+		&.slider-disabled .slider-track
+			background-color #CCC
+

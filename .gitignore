@@ -1,12 +1,9 @@
-*
-.*
-!static
-!templates
-!old_just_for_reference
-!http
-!*.py
-!*.gitignore
-!*.html
-!*.css
-!*.js
-!LICENSE
+*.pyc
+*.swp
+*.orig
+
+
+# NPM packages folder.
+node_modules/
+
+bower_components/

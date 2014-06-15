@@ -1,0 +1,39 @@
+.container
+	form.form-inline
+		.form-group.col-md-12
+			.input-group
+				input#url.form-control(type='text', placeholder='url')
+				.input-group-btn
+					button.btn.btn-primary(type='submit') Open
+
+		.text-center(style='padding: 5em 0 2em')
+			.form-group
+				.btn-group.btn-group-lg
+					//- button#previous.btn.btn-default(type='button')
+					//- 	span.glyphicon.glyphicon-step-backward
+					//- button#fast-backward.btn.btn-default(type='button')
+					//- 	span.glyphicon.glyphicon-fast-backward
+					button#backward.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-backward
+					button#play.btn.btn-default(type='button', style='color: green')
+						span.glyphicon.glyphicon-play
+					button#pause.btn.btn-default(type='button', style='color: blue')
+						span.glyphicon.glyphicon-pause
+					button#stop.btn.btn-default(type='button', style='color: red')
+						span.glyphicon.glyphicon-stop
+					button#forward.btn.btn-default(type='button')
+						span.glyphicon.glyphicon-forward
+					//- button#fast-forward.btn.btn-default(type='button')
+					//- 	span.glyphicon.glyphicon-fast-forward
+					//- button#next.btn.btn-default(type='button')
+					//- 	span.glyphicon.glyphicon-step-forward
+			.form-group(style='padding: 0 1em')
+				input#volume(type='text')
+			.form-group
+				button#muted.btn.btn-default.btn-lg(type='button')
+					span.glyphicon.glyphicon-volume-off
+			.form-group
+				select#subtitles.form-control.input-lg
+		.form-group.col-md-10.col-md-offset-1.position
+			input#position(type='text')
+					

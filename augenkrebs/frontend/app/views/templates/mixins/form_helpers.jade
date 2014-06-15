@@ -1,0 +1,8 @@
+mixin textfield(name, value, label, disabled)
+	.control-group
+		label.control-label(for=name)= label
+		.controls
+			if(disabled)
+				input.input-xlarge.disabled(type='text', name=name, value=value, disabled)
+			else
+				input.input-xlarge(type='text', name=name, value=value)
