@@ -18,6 +18,7 @@ module.exports = class HomeController extends Controller
 	index: ->
 		status = new Status()
 		setInterval ->
+			console.log status
 			status.fetch
 				contentType: 'json'
 				error: ->
@@ -88,6 +89,11 @@ module.exports = class HomeController extends Controller
 		@listenTo @view, 'volume', (volume) =>
 			status.save
 					volume: volume
+
+		@listenTo @view, 'subtitles', (sub) =>
+			console.log 'subtitles', sub
+			status.save
+				subtitle: sub
 
 
 	about: ->

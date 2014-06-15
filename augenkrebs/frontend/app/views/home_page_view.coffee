@@ -17,6 +17,7 @@ module.exports = class HomePageView extends View
 		'click #backward': 'backward'
 		'click #fast-backward': 'fastBackward'
 		'click #muted': 'mute'
+		'change #subtitles': 'subtitles'
 
 	open: (event) =>
 		event.preventDefault()
@@ -62,6 +63,9 @@ module.exports = class HomePageView extends View
 		event.preventDefault()
 		@trigger 'mute'
 
+	subtitles: (event) =>
+		@trigger 'subtitles', $('#subtitles option:selected').val()
+
 	render: =>
 		super
 		posSlider = @$('#position').slider
@@ -96,6 +100,8 @@ module.exports = class HomePageView extends View
 		'change:position model': 'changePosition'
 		'change:volume model': 'changeVolume'
 		'change:muted model': 'changeMuted'
+		'change:subtitle_list model': 'changeSubtitleList'
+		'change:subtitle model': 'changeSubtitle'
 
 
 	changeIsPlaying: (model, field) =>
@@ -124,5 +130,18 @@ module.exports = class HomePageView extends View
 		else
 			$('#muted span').removeClass 'glyphicon-volume-up'
 			$('#muted span').addClass 'glyphicon-volume-off'
+
+	changeSubtitleList: (model, list) =>
+		subtitles = $('#subtitles')
+		subtitles.empty()
+		for sub in list
+			subtitles.append $ '<option>',
+				value: sub
+				text: sub
+
+	changeSubtitle: (model, sub) =>
+		console.log $('#subtitles option[value="'+sub+'"]')
+		$('#subtitles option:selected').prop('selected', false)
+		$('#subtitles option[value="'+sub+'"]').prop('selected', true)
 
 
