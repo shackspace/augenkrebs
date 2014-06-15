@@ -54,7 +54,6 @@ class GlobalThread(threading.Thread):
         response_dict['is_playing'] = self.vlc_player.is_playing()
         response_dict['length'] = self.vlc_player.get_length()
         response_dict['position'] = self.vlc_player.get_time()
-        response_dict['title'] = self.vlc_player.get_title()
 
         response_dict['muted'] = self.vlc_player.audio_get_mute()
         response_dict['volume'] = self.vlc_player.audio_get_volume()
@@ -62,12 +61,17 @@ class GlobalThread(threading.Thread):
         response_dict['audiotrack_list'] = [str(track[1].decode()) for track in \
                 self.vlc_player.audio_get_track_description()]
         response_dict['audio_delay'] = self.vlc_player.audio_get_delay()
-        response_dict['audiotrack'] = self.vlc_player.audio_get_track()
+        response_dict['audiotrack'] = response_dict['audiotrack_list'][self.vlc_player.audio_get_track()]
 
         response_dict['subtitle_list'] = [track[1].decode() for track in \
                 self.vlc_player.video_get_spu_description()]
         response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
-        response_dict['subtitle'] = self.vlc_player.video_get_spu()
+
+        try:
+            response_dict['subtitle'] = response_dict['subtitle_list'][self.vlc_player.video_get_spu()]
+        except IndexError:
+            response_dict['subtitle'] = ""
+                
 
         for elem in response_dict.keys():
             print(elem + " " + str(response_dict[elem]))
