@@ -5,6 +5,7 @@ AboutView = require 'views/about_view'
 Header = require 'models/header'
 HeaderView = require 'views/header_view'
 
+Status = require 'models/status'
 
 module.exports = class HomeController extends Controller
 	beforeAction: ->
@@ -15,7 +16,18 @@ module.exports = class HomeController extends Controller
 			model: headerModel
 
 	index: ->
-		@view = new HomePageView region: 'main'
+		status = new Status()
+		setInterval ->
+			status.fetch
+				contentType: 'json'
+				error: ->
+					console.log 'nope'
+		, 1000
+
+		# status.save {derp: 'herp'}
+		@view = new HomePageView
+			model: status
+			region: 'main'
 
 		@listenTo @view, 'open', (url) =>
 			console.log 'open', url
@@ -29,12 +41,21 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view, 'play', =>
 			console.log 'play'
+			$.ajax
+				type: 'GET'
+				url: '/api/play'
 
 		@listenTo @view, 'pause', =>
 			console.log 'pause'
+			$.ajax
+				type: 'GET'
+				url: '/api/pause'
 
 		@listenTo @view, 'stop', =>
 			console.log 'stop'
+			$.ajax
+				type: 'GET'
+				url: '/api/stop'
 
 		@listenTo @view, 'next', =>
 			console.log 'next'
@@ -53,6 +74,10 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view, 'fast-backward', =>
 			console.log 'fast-backward'
+
+		@listenTo @view, 'seek', (position) =>
+			status.save
+				position: position
 
 
 	about: ->

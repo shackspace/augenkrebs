@@ -59,8 +59,34 @@ module.exports = class HomePageView extends View
 
 	render: =>
 		super
-		@$('#position').slider
+		slider = @$('#position').slider
 			min: 0
 			max: 3600
 			step: 1
 			handle: 'custom'
+			enabled: false
+
+		slider.on 'slide', (event) =>
+			@trigger 'seek', event.value
+
+	listen:
+		'change:is_playing model': 'changeIsPlaying'
+		'change:length model': 'changeLength'
+		'change:position model': 'changePosition'
+
+
+	changeIsPlaying: (model, field) =>
+
+	changeLength: (model, length) =>
+		slider = @$ '#position'
+		if length is -1
+			slider.slider 'disable'
+		else
+			slider.slider 'enable' unless slider.slider 'isEnabled'
+			slider.slider 'setAttribute', 'max', length
+
+	changePosition: (model, pos) =>
+		return if pos is -1
+		slider = @$ '#position'
+		slider.slider 'setValue', pos
+
