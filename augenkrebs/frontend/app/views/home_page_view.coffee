@@ -19,6 +19,9 @@ module.exports = class HomePageView extends View
 		'click #muted': 'mute'
 		'change #subtitles': 'subtitles'
 		'change #audiotrack-list': 'audiotrackList'
+		'change #subtitle-delay': 'subtitleDelay'
+		'change #audio-delay': 'audioDelay'
+
 
 	open: (event) =>
 		event.preventDefault()
@@ -67,8 +70,16 @@ module.exports = class HomePageView extends View
 	subtitles: (event) =>
 		@trigger 'subtitles', $('#subtitles option:selected').val()
 
+	subtitleDelay: (event) =>
+		delay =  parseFloat @$('#subtitle-delay').val()
+		@trigger 'subtitle-delay', delay unless isNaN delay
+
 	audiotrackList: (event) =>
 		@trigger 'audiotrack-list', $('#audiotrack-list option:selected').val()
+
+	audioDelay: (event) =>
+		delay =  parseFloat @$('#audio-delay').val()
+		@trigger 'audio-delay', delay unless isNaN delay
 
 	render: =>
 		super
@@ -106,8 +117,11 @@ module.exports = class HomePageView extends View
 		'change:muted model': 'changeMuted'
 		'change:subtitle_list model': 'changeSubtitleList'
 		'change:subtitle model': 'changeSubtitle'
+		'change:subtitle_delay model': 'changeSubtitleDelay'
 		'change:audiotrack_list model': 'changeAudiotrackList'
 		'change:audiotrack model': 'changeAudiotrack'
+		'change:audio_delay model': 'changeAudioDelay'
+		
 
 
 	changeIsPlaying: (model, field) =>
@@ -149,6 +163,9 @@ module.exports = class HomePageView extends View
 		$('#subtitles option:selected').prop('selected', false)
 		$('#subtitles option[value="'+sub+'"]').prop('selected', true)
 
+	changeSubtitleDelay: (model, delay) =>
+		$('#subtitle-delay').val delay
+
 	changeAudiotrackList: (model, list) =>
 		audiotracks = $('#audiotrack-list')
 		audiotracks.empty()
@@ -161,4 +178,5 @@ module.exports = class HomePageView extends View
 		$('#audiotrack-list option:selected').prop('selected', false)
 		$('#audiotrack-list option[value="'+track+'"]').prop('selected', true)
 
-
+	changeAudioDelay: (model, delay) =>
+		$('#audio-delay').val delay

@@ -32,13 +32,26 @@
 			.form-group
 				button#muted.btn.btn-default.btn-lg(type='button')
 					span.glyphicon.glyphicon-volume-off
+
+	form.form-horizontal
+		.row
 			.form-group
-				p Audio:
-				select#audiotrack-list.form-control.input-lg
+				label.control-label.col-md-2 Audio
+				.col-md-4
+					select#audiotrack-list.form-control
+				label.control-label.col-md-1 Delay
+				.col-md-1
+					input#audio-delay.form-control(type='text')
+		.row
 			.form-group
-				p Subtitles:
-				select#subtitles.form-control.input-lg
-			
+				label.control-label.col-md-2 Subtitles
+				.col-md-4
+					select#subtitles.form-control
+				label.control-label.col-md-1 Delay
+				.col-md-1
+					input#subtitle-delay.form-control(type='text')
+
+	form.form-inline
 		.form-group.col-md-10.col-md-offset-1.position
 			input#position(type='text')
 					

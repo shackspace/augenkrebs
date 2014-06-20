@@ -95,10 +95,20 @@ module.exports = class HomeController extends Controller
 			status.save
 				subtitle: sub
 
+		@listenTo @view, 'subtitle-delay', (delay) =>
+			console.log 'subtitle-delay', delay
+			status.save
+				subtitle_delay: delay
+
 		@listenTo @view, 'audiotrack-list', (track) =>
 			console.log 'audiotrack', track
 			status.save
 				audiotrack: track
+
+		@listenTo @view, 'audio-delay', (delay) =>
+			console.log 'audio-delay', delay
+			status.save
+				audio_delay: delay
 
 
 	about: ->
