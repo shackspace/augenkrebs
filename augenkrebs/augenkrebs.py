@@ -28,51 +28,67 @@ def augenkrebs():
 def api_open():
     try:
         local_queue = queue.Queue()
-        global_queue.put({'action': 'open', 
-                          'url': request.json['url'], 
+        global_queue.put({'action': 'open',
+                          'url': request.json['url'],
                           'response': local_queue})
-        return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
+        return flask.Response(json.dumps(local_queue.get()), \
+                              mimetype='application/json')
     except:
         abort(500)
 
 @app.route('/api/play', methods=['GET'])
 #TODO rewrite play/pause/stop into one routine
 def api_play():
-    """ a GET request on /api/play starts the playback and returns the complete status of the player /api/status """
+    """ a GET request on /api/play starts the playback and returns the
+        complete status of the player /api/status
+    """
     local_queue = queue.Queue()
     global_queue.put({'action': 'play', 'response': local_queue})
-    return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
+    return flask.Response(json.dumps(local_queue.get()), \
+                          mimetype='application/json')
 
 @app.route('/api/pause', methods=['GET'])
 def api_pause():
-    """ a GET request on /api/pause pauses the playback and returns the complete status of the player /api/status """
+    """ a GET request on /api/pause pauses the playback and returns the
+        complete status of the player /api/status
+    """
     local_queue = queue.Queue()
     global_queue.put({'action': 'pause', 'response': local_queue})
-    return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
+    return flask.Response(json.dumps(local_queue.get()), \
+                          mimetype='application/json')
 
 @app.route('/api/stop', methods=['GET'])
 def api_stop():
-    """ a GET request on /api/stop stops the playback and returns the complete status of the player as on /api/status """
+    """ a GET request on /api/stop stops the playback and returns the
+        complete status of the player as on /api/status
+    """
     local_queue = queue.Queue()
     global_queue.put({'action': 'stop', 'response': local_queue})
-    return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
+    return flask.Response(json.dumps(local_queue.get()), \
+                          mimetype='application/json')
 
 @app.route('/api/status', methods=['GET', 'POST'])
 def api_status():
-    """ a GET request on /api/status returns the complete status of the player as JSON
-        a POST request can specify one or more items found in the status JSON and their desired new value. A JSON detailing the new state is returned """
+    """ * a GET request on /api/status returns the complete status of the player
+          as JSON
+        * a POST request can specify one or more items found in the status JSON
+          and their desired new value. A JSON detailing the new state is
+          returned
+    """
     if request.method == 'GET':
         local_queue = queue.Queue()
         global_queue.put({'action': 'get_status', 'response': local_queue})
-        return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
+        return flask.Response(json.dumps(local_queue.get()), \
+                              mimetype='application/json')
 
     elif request.method == 'POST':
         local_queue = queue.Queue()
         request.json['action'] = 'change_status'
         request.json['response'] = local_queue
-        global_queue.put({'action': 'change_status', 'response': local_queue, 
+        global_queue.put({'action': 'change_status', 'response': local_queue,
                           'request': request.json})
-        return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
+        return flask.Response(json.dumps(local_queue.get()), \
+                              mimetype='application/json')
 
 if __name__ == '__main__':
     global_thread = GlobalThread(daemon=True)
