@@ -9,8 +9,6 @@ import queue
 from flask import Flask
 from flask import Response
 from flask import request
-from flask import abort
-from flask import send_from_directory
 from GlobalPlayer.global_player import global_queue
 from GlobalPlayer.global_player import GlobalThread
 
@@ -29,7 +27,7 @@ def augenkrebs():
 
 @app.route('/api/open', methods=['POST'])
 def api_open():
-    
+
     local_queue = queue.Queue()
     global_queue.put({'action': 'open',
                       'url': request.json['url'],

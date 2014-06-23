@@ -24,8 +24,7 @@ class GlobalThread(threading.Thread):
         the VLC player.
     """
 
-    def __init__(self, group=None, target=None, name=None, args=(), kwargs={},\
-            *, daemon=None):
+    def __init__(self, group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None):
         super(GlobalThread, self).__init__()
         self.vlc_instance = vlc.Instance()
         self.vlc_player = self.vlc_instance.media_player_new()
