@@ -25,7 +25,7 @@ class GlobalThread(threading.Thread):
         the VLC player.
     """
 
-    splashArguments = ["chromium", "--kiosk", "http://localhost:4000/icon"]
+    splashArguments = ["chromium", "--kiosk", "--incognito", "http://localhost:4000/icon"]
 
     def __init__(self, group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None):
         super(GlobalThread, self).__init__()
@@ -171,12 +171,11 @@ class GlobalThread(threading.Thread):
                 self.vlc_player.audio_set_mute(request[element])
 
     def show_splashscreen(self):
-        self.hide_splashscreen()
-        self.splashProcess = subprocess.Popen(self.splashArguments)
+        # self.hide_splashscreen()
+        subprocess.Popen(self.splashArguments)
 
     def hide_splashscreen(self):
-        if hasattr(self, 'splashProcess'):
-            self.splashProcess.kill()
+        subprocess.Popen(["killall", "chromium"])
         
 
 def callme(*args):
