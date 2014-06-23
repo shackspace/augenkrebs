@@ -51,7 +51,9 @@ build() {
 
 package() {
   cd "$srcdir/$_gitname-build"
-  install -d augenkrebs /usr/lib/
+  install -Dm644 -d augenkrebs "$pkgdir"/usr/lib/
+  install -Dm644 install/augenkrebs.service "$pkgdir"/usr/lib/systemd/system/augenkrebs.service
+  ln -s /usr/lib/augenkrebs/augenkrebs/augenkrebs.py "$pkgdir"/usr/bin/augenkrebs
 
 }
 
