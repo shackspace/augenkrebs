@@ -67,7 +67,7 @@ def api_status():
 if __name__ == '__main__':
     global_thread = GlobalThread(daemon=True)
     global_thread.start()
-
+    global_thread.show_splashscreen()
     app.run(host='0.0.0.0', port=4000, debug=True)
 
 

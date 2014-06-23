@@ -1,22 +1,26 @@
 import queue
 import threading
+import subprocess
 from GlobalPlayer.vlc import vlc
 
 global_queue = queue.Queue()
 
 class GlobalThread(threading.Thread):
+    splashArguments = ["chromium", "--kiosk", "http://localhost:4000/icon"]
+
     def __init__(self, group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None):
         super(GlobalThread, self).__init__()
         self.vlc_instance = vlc.Instance()
         self.vlc_player = self.vlc_instance.media_player_new()
         self.vlc_player.set_fullscreen(True)
-
+        
 
     def run(self):
         while True:
             task = global_queue.get()
 
             if task['action'] == 'play' and not self.vlc_player.is_playing():
+                self.hide_splashscreen()
                 self.vlc_player.play()
                 self.get_status(task['response'])
 
@@ -25,10 +29,12 @@ class GlobalThread(threading.Thread):
                 self.get_status(task['response'])
 
             elif task['action'] == 'stop':
+                self.show_splashscreen()
                 self.vlc_player.stop()
                 self.get_status(task['response'])
 
             elif task['action'] == 'open':
+                self.hide_splashscreen()
                 #TODO: find good rule for recognizing stream vs file
                 if 'youtube' in task['url']:
                     task['response'].put({'status': 'trying'})
@@ -136,6 +142,14 @@ class GlobalThread(threading.Thread):
 
             elif element == 'muted':
                 self.vlc_player.audio_set_mute(request[element])
+
+    def show_splashscreen(self):
+        self.hide_splashscreen()
+        self.splashProcess = subprocess.Popen(self.splashArguments)
+
+    def hide_splashscreen(self):
+        if hasattr(self, 'splashProcess'):
+            self.splashProcess.kill()
         
 
 def callme(*args):
