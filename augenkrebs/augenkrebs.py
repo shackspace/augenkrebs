@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+ augenkrebs provides a web interface to control the play-back of video
+ files and youtube videos (via VLC)
+"""
 
 from flask import Flask
 from flask import request
@@ -16,6 +20,7 @@ app = Flask(__name__, static_url_path='', static_folder='frontend/public')
 @app.route('/about')
 @app.route('/icon')
 def augenkrebs():
+    """ see frontend directory for index.html """
     return app.send_static_file('index.html')
 
 
@@ -33,24 +38,29 @@ def api_open():
 @app.route('/api/play', methods=['GET'])
 #TODO rewrite play/pause/stop into one routine
 def api_play():
+    """ a GET request on /api/play starts the playback and returns the complete status of the player /api/status """
     local_queue = queue.Queue()
     global_queue.put({'action': 'play', 'response': local_queue})
     return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
 
 @app.route('/api/pause', methods=['GET'])
 def api_pause():
+    """ a GET request on /api/pause pauses the playback and returns the complete status of the player /api/status """
     local_queue = queue.Queue()
     global_queue.put({'action': 'pause', 'response': local_queue})
     return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
 
 @app.route('/api/stop', methods=['GET'])
 def api_stop():
+    """ a GET request on /api/stop stops the playback and returns the complete status of the player as on /api/status """
     local_queue = queue.Queue()
     global_queue.put({'action': 'stop', 'response': local_queue})
     return flask.Response(json.dumps(local_queue.get()), mimetype='application/json')
 
 @app.route('/api/status', methods=['GET', 'POST'])
 def api_status():
+    """ a GET request on /api/status returns the complete status of the player as JSON
+        a POST request can specify one or more items found in the status JSON and their desired new value. A JSON detailing the new state is returned """
     if request.method == 'GET':
         local_queue = queue.Queue()
         global_queue.put({'action': 'get_status', 'response': local_queue})
