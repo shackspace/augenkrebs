@@ -14,7 +14,7 @@ arch=('any')
 url="http://github.com/shackspace/augenkrebs/"
 license=('MIT')
 groups=()
-depends=('python','python-flask','vlc','ttf-freefont')
+depends=('python' 'python-flask' 'vlc' 'ttf-freefont')
 makedepends=('git')
 provides=()
 conflicts=()
@@ -51,7 +51,9 @@ build() {
 
 package() {
   cd "$srcdir/$_gitname-build"
-  install -d augenkrebs /usr/lib/
+  install -Dm644 -d augenkrebs "$pkgdir"/usr/lib/
+  install -Dm644 install/augenkrebs.service "$pkgdir"/usr/lib/systemd/system/augenkrebs.service
+  ln -s /usr/lib/augenkrebs/augenkrebs/augenkrebs.py "$pkgdir"/usr/bin/augenkrebs
 
 }
 
