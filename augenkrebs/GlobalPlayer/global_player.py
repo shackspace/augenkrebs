@@ -12,10 +12,11 @@ from GlobalPlayer.vlc import vlc
      To play a video stream such as a youtube video, one has to wait for an
      event from vlc, triggering a callback function. But this callback function
      cannot call another vlc function (such as play, which would be *really*
-     nice). So we just queue another request in our global_queue from the 
+     nice). So we just queue another request in our global_queue from the
      outside call_me function. For a workaround, it's ok.
 """
 global_queue = queue.Queue()
+
 
 class GlobalThread(threading.Thread):
     """ The GlobalThread class reacts to user_input forwarded by the flask
@@ -54,16 +55,15 @@ class GlobalThread(threading.Thread):
                     media = self.vlc_instance.media_new(task['url'])
                     self.vlc_player.set_media(media)
                     event_manager = self.vlc_player.event_manager()
-                    event_manager.event_attach(vlc.EventType.MediaPlayerEndReached, callme)
+                    event_manager.event_attach(\
+                            vlc.EventType.MediaPlayerEndReached, callme)
                     self.vlc_player.play()
-                
+
                 else:
                     media = self.vlc_instance.media_new(task['url'])
                     self.vlc_player.set_media(media)
                     self.vlc_player.play()
                     task['response'].put({'status': 'success'})
-
-
 
             elif task['action'] == 'stream':
                 try:
@@ -72,7 +72,6 @@ class GlobalThread(threading.Thread):
                         self.vlc_player.play()
                 except TypeError:
                     print("Whoops, no stream found!")
-
 
             elif task['action'] == 'get_status':
                 self.get_status(task['response'])
@@ -83,7 +82,7 @@ class GlobalThread(threading.Thread):
 
             else:
                 self.get_status(task['response'])
-                
+
     def get_status(self, response_queue):
         """ get_status sends a complete status dictionary to the
             response_queue
@@ -91,16 +90,18 @@ class GlobalThread(threading.Thread):
         #TODO: only return dict, don't call queue, but wth'
         response_dict = {}
 
-        response_dict['play_status'] = str(self.vlc_player.get_state()).split('.')[1]
+        response_dict['play_status'] = str(self.vlc_player.get_state()).\
+                split('.')[1]
         response_dict['length'] = self.vlc_player.get_length()
         response_dict['position'] = self.vlc_player.get_time()
+        response_dict['muted'] = self.vlc_player.audio_get_mute()
+        response_dict['volume'] = self.vlc_player.audio_get_volume()
+
         if self.vlc_player.get_media():
             response_dict['title'] = self.vlc_player.get_media().get_mrl()
         else:
             response_dict['title'] = ""
 
-        response_dict['muted'] = self.vlc_player.audio_get_mute()
-        response_dict['volume'] = self.vlc_player.audio_get_volume()
 
         audio_dict = {}
         for track in self.vlc_player.audio_get_track_description():
@@ -110,7 +111,8 @@ class GlobalThread(threading.Thread):
         response_dict['audio_delay'] = self.vlc_player.audio_get_delay()
 
         try:
-            response_dict['audiotrack'] = audio_dict[self.vlc_player.audio_get_track()]
+            response_dict['audiotrack'] = audio_dict[self.vlc_player.\
+                    audio_get_track()]
         except KeyError:
             response_dict['audiotrack'] = ""
 
@@ -118,13 +120,14 @@ class GlobalThread(threading.Thread):
         for track in self.vlc_player.video_get_spu_description():
             subtitle_dict[track[0]] = track[1].decode()
 
-            response_dict['subtitle_list'] = list(subtitle_dict.values())
-            response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
+        response_dict['subtitle_list'] = list(subtitle_dict.values())
+        response_dict['subtitle_delay'] = self.vlc_player.video_get_spu_delay()
 
-            try:
-                response_dict['subtitle'] = subtitle_dict[self.vlc_player.video_get_spu()]
-            except KeyError:
-                response_dict['subtitle'] = ""
+        try:
+            response_dict['subtitle'] = subtitle_dict[self.vlc_player.\
+                    video_get_spu()]
+        except KeyError:
+            response_dict['subtitle'] = ""
                 
         response_queue.put(response_dict)
         
