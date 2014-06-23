@@ -37,23 +37,29 @@ build() {
     cd "$_gitname" && git pull origin
     msg "The local files are updated."
   else
-    git clone "$_gitroot" "$_gitname"
+    git clone -b install_process "$_gitroot" "$_gitname"
   fi
 
   msg "GIT checkout done or server timeout"
   msg "Starting build..."
 
   rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  git clone -b install_process "$srcdir/$_gitname" "$srcdir/$_gitname-build"
   cd "$srcdir/$_gitname-build"
 
 }
 
 package() {
   cd "$srcdir/$_gitname-build"
-  install -Dm644 -d augenkrebs "$pkgdir"/usr/lib/
+  mkdir -p ${pkgdir}/usr/lib/
+#  install -Dm644 -d ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
+  cp -r ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
+  chmod -R a+rX "$pkgdir"/usr/lib/augenkrebs
   install -Dm644 install/augenkrebs.service "$pkgdir"/usr/lib/systemd/system/augenkrebs.service
-  ln -s /usr/lib/augenkrebs/augenkrebs/augenkrebs.py "$pkgdir"/usr/bin/augenkrebs
+
+  mkdir -p ${pkgdir}/usr/bin
+  chmod +x ${pkgdir}/usr/lib/augenkrebs/augenkrebs.py
+  ln -s /usr/lib/augenkrebs/augenkrebs.py ${pkgdir}/usr/bin/augenkrebs
 
 }
 
