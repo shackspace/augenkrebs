@@ -1,0 +1,66 @@
+# For more information, see 'man PKGBUILD'.
+# NOTE: Please fill out the license field for your package! If it is unknown,
+# then please put 'unknown'.
+
+# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
+# for more information on packaging from GIT sources.
+
+# Maintainer: rixx <rixx-augenkrebs@cutebit.de>
+pkgname=augenkrebs-git
+pkgver=0.1
+pkgrel=1
+pkgdesc="Control VLC playback via a web interface. Internetabspielgerät @shackspace."
+arch=('any')
+url="http://github.com/shackspace/augenkrebs/"
+license=('MIT')
+groups=()
+depends=('python' 'python-flask' 'vlc' 'ttf-freefont')
+makedepends=('git')
+provides=()
+conflicts=()
+replaces=()
+backup=()
+options=()
+install='augenkrebs.install'
+source=()
+noextract=()
+md5sums=() #generate with 'makepkg -g'
+
+_gitroot='http://github.com/shackspace/augenkrebs.git'
+_gitname='augenkrebs'
+
+build() {
+  cd "$srcdir"
+  msg "Connecting to GIT server...."
+
+  if [[ -d "$_gitname" ]]; then
+    cd "$_gitname" && git pull origin
+    msg "The local files are updated."
+  else
+    git clone -b install_process "$_gitroot" "$_gitname"
+  fi
+
+  msg "GIT checkout done or server timeout"
+  msg "Starting build..."
+
+  rm -rf "$srcdir/$_gitname-build"
+  git clone -b install_process "$srcdir/$_gitname" "$srcdir/$_gitname-build"
+  cd "$srcdir/$_gitname-build"
+
+}
+
+package() {
+  cd "$srcdir/$_gitname-build"
+  mkdir -p ${pkgdir}/usr/lib/
+#  install -Dm644 -d ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
+  cp -r ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
+  chmod -R a+rX "$pkgdir"/usr/lib/augenkrebs
+  install -Dm644 install/augenkrebs.service "$pkgdir"/usr/lib/systemd/system/augenkrebs.service
+
+  mkdir -p ${pkgdir}/usr/bin
+  chmod +x ${pkgdir}/usr/lib/augenkrebs/augenkrebs.py
+  ln -s /usr/lib/augenkrebs/augenkrebs.py ${pkgdir}/usr/bin/augenkrebs
+
+}
+
+# vim:set ts=2 sw=2 et:
