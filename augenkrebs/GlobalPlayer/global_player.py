@@ -2,9 +2,27 @@ import queue
 import threading
 from GlobalPlayer.vlc import vlc
 
+"""
+  the global_player module provides:
+   * the global_queue for communication with any GlobalThread object
+     here, dictionaries with at least an 'action' and a 'response' field
+   * the GlobalThread class for reacting to user input via the Flask server
+     and controlling the vlc player
+   * the call_me workaround function.
+     To play a video stream such as a youtube video, one has to wait for an
+     event from vlc, triggering a callback function. But this callback function
+     cannot call another vlc function (such as play, which would be *really*
+     nice). So we just queue another request in our global_queue from the 
+     outside call_me function. For a workaround, it's ok.
+"""
 global_queue = queue.Queue()
 
 class GlobalThread(threading.Thread):
+    """ The GlobalThread class reacts to user_input forwarded by the flask
+        server to the global_queue. It processes the requests and controls
+        the VLC player.
+    """
+
     def __init__(self, group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None):
         super(GlobalThread, self).__init__()
         self.vlc_instance = vlc.Instance()
@@ -67,6 +85,9 @@ class GlobalThread(threading.Thread):
                 self.get_status(task['response'])
                 
     def get_status(self, response_queue):
+        """ get_status sends a complete status dictionary to the
+            response_queue
+        """
         #TODO: only return dict, don't call queue, but wth'
         response_dict = {}
 
@@ -108,6 +129,9 @@ class GlobalThread(threading.Thread):
         response_queue.put(response_dict)
         
     def change_status(self, request):
+        """ change_status takes a request dictionary and will try to apply
+            every requested status change contained
+        """
         #TODO: ALL the input sanitizing
         for element in request.keys():
             if element == 'position':
@@ -139,5 +163,6 @@ class GlobalThread(threading.Thread):
         
 
 def callme(*args):
+    """ see module doc string: workaround function """
     global_queue.put({'action': 'stream'})
 
