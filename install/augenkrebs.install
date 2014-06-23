@@ -1,0 +1,4 @@
+post_install(){
+    useradd -u 42 -s /bin/false -r augenkrebs &>/dev/null
+}
+
