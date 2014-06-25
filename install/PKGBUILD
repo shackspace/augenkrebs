@@ -7,14 +7,14 @@
 
 # Maintainer: rixx <rixx-augenkrebs@cutebit.de>
 pkgname=augenkrebs-git
-pkgver=0.1
+pkgver=0.0.0
 pkgrel=1
 pkgdesc="Control VLC playback via a web interface. Internetabspielgerät @shackspace."
 arch=('any')
 url="http://github.com/shackspace/augenkrebs/"
 license=('MIT')
 groups=()
-depends=('python' 'python-flask' 'vlc' 'ttf-freefont')
+depends=('python' 'python-flask' 'vlc' 'ttf-freefont' 'chromium')
 makedepends=('git')
 provides=()
 conflicts=()
@@ -22,38 +22,23 @@ replaces=()
 backup=()
 options=()
 install='augenkrebs.install'
-source=()
+source=("$pkgname"::'git://github.com/shackspace/augenkrebs.git')
 noextract=()
-md5sums=() #generate with 'makepkg -g'
+md5sums=('SKIP') #generate with 'makepkg -g'
 
 _gitroot='http://github.com/shackspace/augenkrebs.git'
 _gitname='augenkrebs'
 
-build() {
-  cd "$srcdir"
-  msg "Connecting to GIT server...."
-
-  if [[ -d "$_gitname" ]]; then
-    cd "$_gitname" && git pull origin
-    msg "The local files are updated."
-  else
-    git clone "$_gitroot" "$_gitname"
-  fi
-
-  msg "GIT checkout done or server timeout"
-  msg "Starting build..."
-
-  rm -rf "$srcdir/$_gitname-build"
-  git clone "$srcdir/$_gitname" "$srcdir/$_gitname-build"
-  cd "$srcdir/$_gitname-build"
-
+pkgver() {
+  cd "$srcdir/$pkgname"
+  git describe --long --tags | sed -r 's/([^-]*-g)/r\1/;s/-/./g'
 }
 
 package() {
-  cd "$srcdir/$_gitname-build"
+  cd "$srcdir/$pkgname"
   mkdir -p ${pkgdir}/usr/lib/
 #  install -Dm644 -d ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
-  cp -r ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
+  cp -r augenkrebs "$pkgdir"/usr/lib/
   chmod -R a+rX "$pkgdir"/usr/lib/augenkrebs
   install -Dm644 install/augenkrebs.service "$pkgdir"/usr/lib/systemd/system/augenkrebs.service
 
@@ -62,5 +47,7 @@ package() {
   ln -s /usr/lib/augenkrebs/augenkrebs.py ${pkgdir}/usr/bin/augenkrebs
 
 }
+
+
 
 # vim:set ts=2 sw=2 et:
