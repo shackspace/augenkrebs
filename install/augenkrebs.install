@@ -1,5 +1,5 @@
 post_install(){
-    useradd -u 42 -s /bin/false -r augenkrebs &>/dev/null
+    useradd -u 42 -m augenkrebs &>/dev/null
 }
 
 post_remove(){
