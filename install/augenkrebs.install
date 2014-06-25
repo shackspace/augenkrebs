@@ -1,0 +1,8 @@
+post_install(){
+    useradd -u 42 -m augenkrebs &>/dev/null
+}
+
+post_remove(){
+    userdel augenkrebs &>/dev/null
+}
+
