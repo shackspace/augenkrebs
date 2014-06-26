@@ -1,7 +1,7 @@
 # Maintainer: rixx <rixx-aur@cutebit.de>
 
 pkgname=augenkrebs-git
-pkgver=0.0.0
+pkgver=0.1
 pkgrel=1
 pkgdesc="Control VLC playback via a web interface. Internetabspielgerät @shackspace."
 arch=('any')
