@@ -1,11 +1,5 @@
-# For more information, see 'man PKGBUILD'.
-# NOTE: Please fill out the license field for your package! If it is unknown,
-# then please put 'unknown'.
+# Maintainer: rixx <rixx-aur@cutebit.de>
 
-# See http://wiki.archlinux.org/index.php/VCS_PKGBUILD_Guidelines
-# for more information on packaging from GIT sources.
-
-# Maintainer: rixx <rixx-augenkrebs@cutebit.de>
 pkgname=augenkrebs-git
 pkgver=0.0.0
 pkgrel=1
@@ -36,18 +30,19 @@ pkgver() {
 
 package() {
   cd "$srcdir/$pkgname"
+
   mkdir -p ${pkgdir}/usr/lib/
-#  install -Dm644 -d ${srcdir}/${_gitname}-build/augenkrebs "$pkgdir"/usr/lib/
   cp -r augenkrebs "$pkgdir"/usr/lib/
   chmod -R a+rX "$pkgdir"/usr/lib/augenkrebs
+
   install -Dm644 install/augenkrebs.service "$pkgdir"/usr/lib/systemd/system/augenkrebs.service
 
   mkdir -p ${pkgdir}/usr/bin
   chmod +x ${pkgdir}/usr/lib/augenkrebs/augenkrebs.py
   ln -s /usr/lib/augenkrebs/augenkrebs.py ${pkgdir}/usr/bin/augenkrebs
 
+  install -D -m644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+
 }
-
-
 
 # vim:set ts=2 sw=2 et:
