@@ -26,10 +26,11 @@ module.exports = class HomeController extends Controller
 				contentType: 'json'
 				error: ->
 					console.log 'nope'
-			playlist.fetch
-				contentType: 'json'
-				error: ->
-					console.log 'nope'
+			unless playlist.suspendUpdate
+				playlist.fetch
+					contentType: 'json'
+					error: ->
+						console.log 'nope'
 		, 1000
 
 		# status.save {derp: 'herp'}
@@ -47,6 +48,9 @@ module.exports = class HomeController extends Controller
 			collection: playlist
 			region: 'playlist'
 
+		@listenTo @view.subview('playlist'), 'sort-start', (model) ->
+			playlist.suspendUpdate = true
+
 		@listenTo @view.subview('playlist'), 'sort-stop', (model, newIndex) ->
 			$.ajax
 				url: '/api/playlist/' + newIndex
@@ -55,6 +59,8 @@ module.exports = class HomeController extends Controller
 					url: model.get 'url'
 				contentType: 'application/json'
 				dataType: 'json'
+				complete: ->
+					playlist.suspendUpdate = false
 
 		@listenTo controlsView, 'open', (url) =>
 			console.log 'open', url

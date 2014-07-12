@@ -4,6 +4,13 @@ class ItemView extends View
 	template: require 'views/templates/playlist_item'
 	tagName: 'tr'
 
+	events:
+		'click .glyphicon': 'removeClick'
+
+	removeClick: (event) ->
+		event.preventDefault()
+		@model.destroy()
+
 
 module.exports = class PlaylistView extends View
 	autoRender: true
@@ -18,6 +25,8 @@ module.exports = class PlaylistView extends View
 			modelView: ItemView
 			collection: @collection
 			sortable: true
+		@listenTo @collectionView, 'sortStart', (model) =>
+			@trigger 'sort-start', model
 		@listenTo @collectionView, 'sortStop', (model, newIndex) =>
 			@trigger 'sort-stop', model, newIndex
 
