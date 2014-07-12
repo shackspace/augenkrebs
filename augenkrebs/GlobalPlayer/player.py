@@ -23,20 +23,20 @@ class Player():
             self.vlc_player.play()
         
         if task:
-            self.get_status(task['response'])
+            self.get_status(task)
 
     def pause(self, task):
         """ pauses the current playback """
         if self.vlc_player.is_playing():
             self.vlc_player.pause()
-        self.get_status(task['response'])
+        self.get_status(task)
 
     def stop(self, task):
         """ stops the current playback and shows the splashscreen """
         if self.vlc_player.is_playing():
             show_splashscreen()
             self.vlc_player.stop()
-        self.get_status(task['response'])
+        self.get_status(task)
 
     def open(self, task):
         """ opens a given URL and starts playback.
@@ -73,7 +73,7 @@ class Player():
         except TypeError:
             print("Whoops, no stream found!")
 
-    def get_status(self, response_queue):
+    def get_status(self, task):
         """ get_status sends a complete status dictionary to the
             response_queue
         """
@@ -115,7 +115,7 @@ class Player():
         except KeyError:
             response['subtitle'] = ""
                 
-        response_queue.put(response)
+        task['response'].put(response)
 
     def change_status(self, task):
         """ change_status takes a request dictionary and will try to apply
@@ -151,7 +151,7 @@ class Player():
             elif element == 'muted':
                 self.vlc_player.audio_set_mute(request[element])
 
-        self.get_status(task['response'])
+        self.get_status(task)
 
     def get_playlist(self, task):
         task['response'].put([{'url': name for name in self.playlist}])

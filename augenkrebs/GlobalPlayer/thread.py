@@ -34,11 +34,11 @@ class GlobalThread(threading.Thread):
         while True:
             task = global_queue.get()
 
-            try:
-                function = getattr(self.player, task['action'])
-                self.player.function(task)
-            except:
-                self.player.get_status(task['response'])
+            #try:
+            getattr(self.player, task['action'])(task)
+            #except Exception as e:
+            #    print(e)
+            #    self.player.get_status(task['response'])
                 
 
 
