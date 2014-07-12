@@ -11,11 +11,15 @@
     "moment": "~2.4",
     "normalize-css": "~2.1.2",
     "h5bp-helpers": "~0.1.0",
-    "seiyria-bootstrap-slider": "seiyria/bootstrap-slider#master"
+    "seiyria-bootstrap-slider": "seiyria/bootstrap-slider#master",
+    "backbone.collectionView": "~0.10.1",
+    "jquery-ui-sortable": "*"
   },
   "overrides": {
     "modernizr": {
-      "main":["modernizr.js"]
+      "main": [
+        "modernizr.js"
+      ]
     },
     "backbone": {
       "dependencies": {
@@ -44,6 +48,9 @@
         "js/bootstrap-slider.js",
         "dist/css/bootstrap-slider.css"
       ]
+    },
+    "backbone.collectionView": {
+      "dependencies": {}
     }
   }
 }

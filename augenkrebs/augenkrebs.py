@@ -67,7 +67,7 @@ def api_stop():
     return Response(json.dumps(local_queue.get()), mimetype=JSON)
 
 
-@app.route('/api/playlist', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/api/playlist/', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def api_playlist():
     local_queue = queue.Queue()
     task = {'response': local_queue}
