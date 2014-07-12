@@ -24,9 +24,7 @@ class GlobalThread(threading.Thread):
         server to the global_queue. It processes the requests and controls
         the VLC player.
     """
-    def __init__(self, group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None):
-        super(GlobalThread, self).__init__()
-        self.player = Player()
+    player = Player()
 
     def run(self):
         while True:

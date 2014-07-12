@@ -42,18 +42,27 @@ class Player():
         """ opens a given URL and starts playback.
             in case the playlist exists already, insert at the beginning
         """
+        if self.playlist:
+            self.playlist[0] = task['url']
+        else:
+            self.playlist = [task['url']]
+
+        self._open(task['response'])
+
+    def _open(self, response_queue=None)
         # TODO: recognizing stream
-        if 'youtube' in task['url']:
-            task['response'].put({'status': 'trying'})
+        if 'youtube' in self.playlist[0]:
             event_manager = self.vlc_player.event_manager()
             event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,\
                     callme)
 
         hide_splashscreen()
-        media = self.vlc_instance.media_new(task['url'])
+        media = self.vlc_instance.media_new(self.playlist[0])
         self.vlc_player.set_media(media)
         self.vlc_player.play()
-        task['response'].put({'status': 'success'})
+
+        if response_queue:
+            response_queue.put({'status': 'success'})
 
     def stream(self, task):
         """ plays a previously opened stream """
@@ -144,3 +153,21 @@ class Player():
 
         self.get_status(task['response'])
 
+    def get_playlist(self, task):
+        task['response'].put([{'url': name for name in self.playlist}])
+
+    def playlist_append(self, task):
+        self.playlist.append(task['url'])
+        self.get_playlist(task)
+
+    def new_playlist(self, task):
+        self.playlist = [element['url'] for element in task['list']]
+        self.get_playlist(task)
+
+    def clear_playlist(self, task):
+        self.playlist = []
+        self.get_playlist(task)
+
+    def play_next(self, task):
+        self.playlist = self.playlist[1:]
+        self._open()
