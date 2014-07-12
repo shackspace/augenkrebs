@@ -50,6 +50,10 @@ module.exports = class HomeController extends Controller
 
 		@listenTo @view.subview('playlist'), 'sort-start', (model) ->
 			playlist.suspendUpdate = true
+			$.ajax
+				url: '/api/playlist/' + model.id
+				type: 'DELETE'
+
 
 		@listenTo @view.subview('playlist'), 'sort-stop', (model, newIndex) ->
 			$.ajax
@@ -71,6 +75,8 @@ module.exports = class HomeController extends Controller
 					url: url
 				contentType: 'application/json'
 				dataType: 'json'
+				success: ->
+					controlsView.clearUrl()
 
 		@listenTo controlsView, 'append', (url) =>
 			console.log 'append', url
@@ -81,6 +87,8 @@ module.exports = class HomeController extends Controller
 					url: url
 				contentType: 'application/json'
 				dataType: 'json'
+				success: ->
+					controlsView.clearUrl()
 
 		@listenTo controlsView, 'play', =>
 			console.log 'play'

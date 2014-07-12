@@ -115,6 +115,9 @@ module.exports = class ControlsView extends View
 		volSlider.on 'slideStop', volEventHandler
 		volSlider.on 'slide', volEventHandler
 
+	clearUrl: ->
+		@$('#url').val('')
+
 	listen:
 		'change:is_playing model': 'changeIsPlaying'
 		'change:length model': 'changeLength'
@@ -127,8 +130,6 @@ module.exports = class ControlsView extends View
 		'change:audiotrack_list model': 'changeAudiotrackList'
 		'change:audiotrack model': 'changeAudiotrack'
 		'change:audio_delay model': 'changeAudioDelay'
-		
-
 
 	changeIsPlaying: (model, field) =>
 
