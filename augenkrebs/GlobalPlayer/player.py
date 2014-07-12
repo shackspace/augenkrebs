@@ -43,7 +43,7 @@ class Player():
             in case the playlist exists already, insert at the beginning
         """
         if self.playlist:
-            self.playlist[0] = task['url']
+            self.playlist.insert(0, task['url'])
         else:
             self.playlist = [task['url']]
 
