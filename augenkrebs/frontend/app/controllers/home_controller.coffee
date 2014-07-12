@@ -37,9 +37,11 @@ module.exports = class HomeController extends Controller
 			model: status
 			region: 'main'
 
-		@view.subview 'controls', new ControlsView
+		controlsView = new ControlsView
 			model: status
 			region: 'controls'
+
+		@view.subview 'controls', controlsView
 
 		@view.subview 'playlist', new PlaylistView
 			collection: playlist
@@ -54,7 +56,7 @@ module.exports = class HomeController extends Controller
 				contentType: 'application/json'
 				dataType: 'json'
 
-		@listenTo @view, 'open', (url) =>
+		@listenTo controlsView, 'open', (url) =>
 			console.log 'open', url
 			$.ajax
 				url: '/api/open'
@@ -64,7 +66,7 @@ module.exports = class HomeController extends Controller
 				contentType: 'application/json'
 				dataType: 'json'
 
-		@listenTo @view, 'append', (url) =>
+		@listenTo controlsView, 'append', (url) =>
 			console.log 'append', url
 			$.ajax
 				url: '/api/playlist/'
@@ -74,72 +76,72 @@ module.exports = class HomeController extends Controller
 				contentType: 'application/json'
 				dataType: 'json'
 
-		@listenTo @view, 'play', =>
+		@listenTo controlsView, 'play', =>
 			console.log 'play'
 			$.ajax
 				type: 'GET'
 				url: '/api/play'
 
-		@listenTo @view, 'pause', =>
+		@listenTo controlsView, 'pause', =>
 			console.log 'pause'
 			$.ajax
 				type: 'GET'
 				url: '/api/pause'
 
-		@listenTo @view, 'stop', =>
+		@listenTo controlsView, 'stop', =>
 			console.log 'stop'
 			$.ajax
 				type: 'GET'
 				url: '/api/stop'
 
-		@listenTo @view, 'next', =>
+		@listenTo controlsView, 'next', =>
 			console.log 'next'
 
-		@listenTo @view, 'previous', =>
+		@listenTo controlsView, 'previous', =>
 			console.log 'previous'
 
-		@listenTo @view, 'forward', =>
+		@listenTo controlsView, 'forward', =>
 			console.log 'forward'
 
-		@listenTo @view, 'fast-forward', =>
+		@listenTo controlsView, 'fast-forward', =>
 			console.log 'fast-forward'
 
-		@listenTo @view, 'backward', =>
+		@listenTo controlsView, 'backward', =>
 			console.log 'backward'
 
-		@listenTo @view, 'fast-backward', =>
+		@listenTo controlsView, 'fast-backward', =>
 			console.log 'fast-backward'
 
-		@listenTo @view, 'mute', =>
+		@listenTo controlsView, 'mute', =>
 
 			console.log 'mute'
 			status.save
 				muted: +(not status.get('muted'))
 
-		@listenTo @view, 'seek', (position) =>
+		@listenTo controlsView, 'seek', (position) =>
 			status.save
 					position: position
 
-		@listenTo @view, 'volume', (volume) =>
+		@listenTo controlsView, 'volume', (volume) =>
 			status.save
 					volume: volume
 
-		@listenTo @view, 'subtitles', (sub) =>
+		@listenTo controlsView, 'subtitles', (sub) =>
 			console.log 'subtitles', sub
 			status.save
 				subtitle: sub
 
-		@listenTo @view, 'subtitle-delay', (delay) =>
+		@listenTo controlsView, 'subtitle-delay', (delay) =>
 			console.log 'subtitle-delay', delay
 			status.save
 				subtitle_delay: delay
 
-		@listenTo @view, 'audiotrack-list', (track) =>
+		@listenTo controlsView, 'audiotrack-list', (track) =>
 			console.log 'audiotrack', track
 			status.save
 				audiotrack: track
 
-		@listenTo @view, 'audio-delay', (delay) =>
+		@listenTo controlsView, 'audio-delay', (delay) =>
 			console.log 'audio-delay', delay
 			status.save
 				audio_delay: delay
