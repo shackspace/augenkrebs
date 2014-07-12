@@ -2,6 +2,7 @@ import queue
 import threading
 import subprocess
 from GlobalPlayer.vlc import vlc
+from GlobalPlayer.player import Player
 
 """
   the global_player module provides:
@@ -17,6 +18,7 @@ from GlobalPlayer.vlc import vlc
      outside call_me function. For a workaround, it's ok.
 """
 global_queue = queue.Queue()
+playlist = []
 
 
 class GlobalThread(threading.Thread):
@@ -32,7 +34,6 @@ class GlobalThread(threading.Thread):
         self.vlc_instance = vlc.Instance()
         self.vlc_player = self.vlc_instance.media_player_new()
         self.vlc_player.set_fullscreen(True)
-
 
     def run(self):
         while True:

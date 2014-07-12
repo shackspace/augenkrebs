@@ -11,8 +11,7 @@ import queue
 from flask import Flask
 from flask import Response
 from flask import request
-from GlobalPlayer.global_player import global_queue
-from GlobalPlayer.global_player import GlobalThread
+from GlobalPlayer.thread import GlobalThread, global_queue
 
 JSON = 'application/json'
 STATIC_DIR = os.path.dirname(os.path.realpath(__file)) + \
