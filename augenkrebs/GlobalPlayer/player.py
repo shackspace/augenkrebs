@@ -42,11 +42,7 @@ class Player():
         """ opens a given URL and starts playback.
             in case the playlist exists already, insert at the beginning
         """
-        if self.playlist:
-            self.playlist.insert(0, task['url'])
-        else:
-            self.playlist = [task['url']]
-
+        self.playlist = [task['url']]
         self._open(task['response'])
 
     def _open(self, response_queue=None):
@@ -154,7 +150,8 @@ class Player():
         self.get_status(task)
 
     def get_playlist(self, task):
-        task['response'].put([{'url': name for name in self.playlist}])
+        print(self.playlist)
+        task['response'].put([{'url': name} for name in self.playlist])
 
     def playlist_append(self, task):
         self.playlist.append(task['url'])
@@ -188,6 +185,11 @@ class Player():
     def clear_playlist_track(self, task):
         try:
             del self.playlist[task['track']]
+            if task['track'] == 0:
+                if self.playlist:
+                    self._open()
+                else:
+                    self.stop(task)
         except IndexError:
             pass
 
