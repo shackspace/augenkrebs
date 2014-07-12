@@ -7,6 +7,8 @@ module.exports = class ControlsView extends View
 
 	events:
 		'submit form': 'open'
+		'click .open': 'open'
+		'click .append': 'append'
 		'click #play': 'play'
 		'click #pause': 'pause'
 		'click #stop': 'stop'
@@ -26,6 +28,10 @@ module.exports = class ControlsView extends View
 	open: (event) =>
 		event.preventDefault()
 		@trigger 'open', @$('#url').val()
+
+	append: (event) =>
+		event.preventDefault()
+		@trigger 'append', @$('#url').val()
 
 	play: (event) =>
 		event.preventDefault()
