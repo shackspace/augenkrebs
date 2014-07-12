@@ -1,6 +1,5 @@
 from GlobalPlayer.vlc import vlc
 from GlobalPlayer.splashscreen import show_splashscreen, hide_splashscreen
-from GlobalPlayer.thread import callme
 
 """ 
   the player module provides the Player class that is used by
@@ -11,10 +10,11 @@ from GlobalPlayer.thread import callme
 class Player():
     playlist = []
 
-    def __init__(self):
+    def __init__(self, callback):
         self.vlc_instance = vlc.Instance()
         self.vlc_player = self.vlc_instance.media_player_new()
         self.vlc_player.set_fullscreen(True)
+        self.callback = callback
 
     def play(self, task):
         """ activates the player and hides the splashscreen """
@@ -49,12 +49,12 @@ class Player():
 
         self._open(task['response'])
 
-    def _open(self, response_queue=None)
+    def _open(self, response_queue=None):
         # TODO: recognizing stream
         if 'youtube' in self.playlist[0]:
             event_manager = self.vlc_player.event_manager()
             event_manager.event_attach(vlc.EventType.MediaPlayerEndReached,\
-                    callme)
+                    self.callback)
 
         hide_splashscreen()
         media = self.vlc_instance.media_new(self.playlist[0])
@@ -70,10 +70,10 @@ class Player():
             for item in self.vlc_player.get_media().subitems():
                 self.vlc_player.set_media(item)
                 self.play(None)
-            except TypeError:
-                print("Whoops, no stream found!")
+        except TypeError:
+            print("Whoops, no stream found!")
 
-    def get_status(self, task):
+    def get_status(self, response_queue):
         """ get_status sends a complete status dictionary to the
             response_queue
         """

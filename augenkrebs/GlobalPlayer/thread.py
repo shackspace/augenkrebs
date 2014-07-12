@@ -1,6 +1,5 @@
 import queue
 import threading
-import subprocess
 from GlobalPlayer.player import Player
 
 """
@@ -19,12 +18,17 @@ from GlobalPlayer.player import Player
 global_queue = queue.Queue()
 
 
+def callme(*args):
+    """ see module doc string: workaround function """
+    global_queue.put({'action': 'stream'})
+
+
 class GlobalThread(threading.Thread):
     """ The GlobalThread class reacts to user_input forwarded by the flask
         server to the global_queue. It processes the requests and controls
         the VLC player.
     """
-    player = Player()
+    player = Player(callback=callme)
 
     def run(self):
         while True:
@@ -37,7 +41,4 @@ class GlobalThread(threading.Thread):
                 self.player.get_status(task['response'])
                 
 
-def callme(*args):
-    """ see module doc string: workaround function """
-    global_queue.put({'action': 'stream'})
 

@@ -15,7 +15,7 @@ from GlobalPlayer.splashscreen import show_splashscreen
 
 
 JSON = 'application/json'
-STATIC_DIR = os.path.dirname(os.path.realpath(__file)) + '/frontend/public'
+STATIC_DIR = os.path.dirname(os.path.realpath(__file__)) + '/frontend/public'
 app = Flask(__name__, static_url_path='', static_folder=STATIC_DIR)
 
 
@@ -86,7 +86,7 @@ def api_playlist():
     global_queue.put(task)
     return Response(json.dumps(local_queue.get()), mimetype=JSON)
 
-@app.route('api/playlist/<int:track>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/api/playlist/<int:track>', methods=['GET', 'PUT', 'DELETE'])
 def api_playlist_individual(track):
     local_queue = queue.Queue()
     task = {'response': local_queue, 'track': track}
