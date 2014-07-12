@@ -171,3 +171,24 @@ class Player():
     def play_next(self, task):
         self.playlist = self.playlist[1:]
         self._open()
+
+    def get_playlist_track(self, task):
+        try:
+            task['response'].put({'url': self.playlist[task['track']]})
+        except IndexError:
+            task['response'].put({})
+
+    def playlist_insert(self, task):
+        self.playlist.insert(task['track'], task['url'])
+        if task['track'] == 0:
+            self._open()
+
+        self.get_playlist(task)
+
+    def clear_playlist_track(self, task):
+        try:
+            del self.playlist[task['track']]
+        except IndexError:
+            pass
+
+        self.get_playlist(task)

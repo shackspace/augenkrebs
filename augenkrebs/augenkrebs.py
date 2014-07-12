@@ -86,6 +86,23 @@ def api_playlist():
     global_queue.put(task)
     return Response(json.dumps(local_queue.get()), mimetype=JSON)
 
+@app.route('api/playlist/<int:track>', methods=['GET', 'PUT', 'DELETE'])
+def api_playlist_individual(track):
+    local_queue = queue.Queue()
+    task = {'response': local_queue, 'track': track}
+
+    if request.method == 'GET':
+        task['action'] = 'get_playlist_track'
+    elif request.method == 'PUT':
+        task['action'] = 'playlist_insert'
+        task['url'] = request.json['url']
+    elif request.method == 'DELETE':
+        task['action'] = 'clear_playlist_track'
+
+    global_queue.put(task)
+    return Response(json.dumps(local_queue.get()), mimetype=JSON)
+    
+
 @app.route('/api/playlist/play_next', methods=['GET'])
 def api_play_next():
     local_queue = queue.Queue()
