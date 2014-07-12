@@ -3,7 +3,6 @@
  augenkrebs provides a web interface to control the play-back of video
  files and youtube videos (via VLC)
 """
-
 import os
 import sys
 import json
@@ -11,13 +10,12 @@ import queue
 from flask import Flask
 from flask import Response
 from flask import request
-from GlobalPlayer.global_player import global_queue
-from GlobalPlayer.global_player import GlobalThread
+from GlobalPlayer.thread import GlobalThread, global_queue
+from GlobalPlayer.splashscreen import show_splashscreen
+
 
 JSON = 'application/json'
-STATIC_DIR = os.path.dirname(os.path.realpath(__file)) + \
-             '/frontend/public'
-
+STATIC_DIR = os.path.dirname(os.path.realpath(__file__)) + '/frontend/public'
 app = Flask(__name__, static_url_path='', static_folder=STATIC_DIR)
 
 
@@ -31,7 +29,6 @@ def augenkrebs():
 
 @app.route('/api/open', methods=['POST'])
 def api_open():
-
     local_queue = queue.Queue()
     global_queue.put({'action': 'open',
                       'url': request.json['url'],
@@ -70,6 +67,49 @@ def api_stop():
     return Response(json.dumps(local_queue.get()), mimetype=JSON)
 
 
+@app.route('/api/playlist', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def api_playlist():
+    local_queue = queue.Queue()
+    task = {'response': local_queue}
+
+    if request.method == 'GET':
+        task['action'] = 'get_playlist'
+    elif request.method == 'POST':
+        task['action'] = 'playlist_append'
+        task['url'] = request.json['url']
+    elif request.method == 'PUT':
+        task['action'] = 'new_playlist'
+        task['list'] = request.json
+    elif request.method == 'DELETE':
+        task['action'] = 'clear_playlist'
+
+    global_queue.put(task)
+    return Response(json.dumps(local_queue.get()), mimetype=JSON)
+
+@app.route('/api/playlist/<int:track>', methods=['GET', 'PUT', 'DELETE'])
+def api_playlist_individual(track):
+    local_queue = queue.Queue()
+    task = {'response': local_queue, 'track': track}
+
+    if request.method == 'GET':
+        task['action'] = 'get_playlist_track'
+    elif request.method == 'PUT':
+        task['action'] = 'playlist_insert'
+        task['url'] = request.json['url']
+    elif request.method == 'DELETE':
+        task['action'] = 'clear_playlist_track'
+
+    global_queue.put(task)
+    return Response(json.dumps(local_queue.get()), mimetype=JSON)
+    
+
+@app.route('/api/playlist/play_next', methods=['GET'])
+def api_play_next():
+    local_queue = queue.Queue()
+    global_queue.put({'action': 'play_next', 'response': local_queue})
+    return Response(json.dumps(local_queue.get()), mimetype=JSON)
+
+
 @app.route('/api/status', methods=['GET', 'POST'])
 def api_status():
     """ * a GET request on /api/status returns the complete status of the
@@ -85,8 +125,6 @@ def api_status():
 
     elif request.method == 'POST':
         local_queue = queue.Queue()
-        request.json['action'] = 'change_status'
-        request.json['response'] = local_queue
         global_queue.put({'action': 'change_status',
                           'response': local_queue,
                           'request': request.json})
@@ -96,5 +134,5 @@ def api_status():
 if __name__ == '__main__':
     global_thread = GlobalThread(daemon=True)
     global_thread.start()
-    global_thread.show_splashscreen()
+    show_splashscreen()
     app.run(host='0.0.0.0', port=4000, debug=True)
