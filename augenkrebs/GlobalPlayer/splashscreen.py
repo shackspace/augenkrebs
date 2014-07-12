@@ -1,3 +1,6 @@
+""" the splashscreen module provides wrapper functions to show and hide the 
+    chromium splashscreen """
+
 SPLASH_ARGUMENTS = ["chromium", "--kiosk", "--incognito", "http://localhost:4000/icon"]
 
 
