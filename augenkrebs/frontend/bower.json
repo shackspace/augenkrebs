@@ -12,7 +12,8 @@
     "normalize-css": "~2.1.2",
     "h5bp-helpers": "~0.1.0",
     "seiyria-bootstrap-slider": "seiyria/bootstrap-slider#master",
-    "jquery-sortable": "~0.9.12"
+    "backbone.collectionView": "~0.10.1",
+    "jquery-ui-sortable": "*"
   },
   "overrides": {
     "modernizr": {
@@ -47,6 +48,9 @@
         "js/bootstrap-slider.js",
         "dist/css/bootstrap-slider.css"
       ]
+    },
+    "backbone.collectionView": {
+      "dependencies": {}
     }
   }
 }

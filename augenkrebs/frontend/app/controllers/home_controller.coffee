@@ -1,11 +1,14 @@
 Controller = require 'controllers/base/controller'
 HomePageView = require 'views/home_page_view'
 AboutView = require 'views/about_view'
+ControlsView = require 'views/controls_view'
+PlaylistView = require 'views/playlist_view'
 
 Header = require 'models/header'
 HeaderView = require 'views/header_view'
 
 Status = require 'models/status'
+{Playlist} = require 'models/playlist'
 
 module.exports = class HomeController extends Controller
 	beforeAction: ->
@@ -17,9 +20,13 @@ module.exports = class HomeController extends Controller
 
 	index: ->
 		status = new Status()
+		playlist = new Playlist()
 		setInterval ->
-			console.log status
 			status.fetch
+				contentType: 'json'
+				error: ->
+					console.log 'nope'
+			playlist.fetch
 				contentType: 'json'
 				error: ->
 					console.log 'nope'
@@ -29,6 +36,23 @@ module.exports = class HomeController extends Controller
 		@view = new HomePageView
 			model: status
 			region: 'main'
+
+		@view.subview 'controls', new ControlsView
+			model: status
+			region: 'controls'
+
+		@view.subview 'playlist', new PlaylistView
+			collection: playlist
+			region: 'playlist'
+
+		@listenTo @view.subview('playlist'), 'sort-stop', (model, newIndex) ->
+			$.ajax
+				url: '/api/playlist/' + newIndex
+				type: 'PUT'
+				data: JSON.stringify
+					url: model.get 'url'
+				contentType: 'application/json'
+				dataType: 'json'
 
 		@listenTo @view, 'open', (url) =>
 			console.log 'open', url
