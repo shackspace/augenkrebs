@@ -315,6 +315,7 @@ module.exports = HomeController = (function(_super) {
       });
       if (!playlist.suspendUpdate) {
         return playlist.fetch({
+          reset: true,
           contentType: 'json',
           error: function() {
             return console.log('nope');
