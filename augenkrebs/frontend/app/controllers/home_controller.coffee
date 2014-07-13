@@ -28,6 +28,7 @@ module.exports = class HomeController extends Controller
 					console.log 'nope'
 			unless playlist.suspendUpdate
 				playlist.fetch
+					reset: true
 					contentType: 'json'
 					error: ->
 						console.log 'nope'
