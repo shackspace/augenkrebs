@@ -16,11 +16,6 @@
     "jquery-ui-sortable": "*"
   },
   "overrides": {
-    "modernizr": {
-      "main": [
-        "modernizr.js"
-      ]
-    },
     "backbone": {
       "dependencies": {
         "lodash": "*",
@@ -41,8 +36,7 @@
     "seiyria-bootstrap-slider": {
       "dependencies": {
         "jquery": "*",
-        "bootstrap": "*",
-        "modernizr": "*"
+        "bootstrap": "*"
       },
       "main": [
         "js/bootstrap-slider.js",

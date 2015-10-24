@@ -95,6 +95,7 @@ module.exports = class ControlsView extends View
 			step: 1
 			handle: 'custom'
 			enabled: false
+			formatter: (position) -> moment().startOf('day').milliseconds(position).format('HH:mm:ss')
 
 		slideEventHandler = (event) =>
 			@trigger 'seek', event.value
@@ -165,6 +166,7 @@ module.exports = class ControlsView extends View
 			subtitles.append $ '<option>',
 				value: sub
 				text: sub
+		@changeSubtitle model, model.get 'subtitle'
 
 	changeSubtitle: (model, sub) =>
 		$('#subtitles option:selected').prop('selected', false)
@@ -174,12 +176,14 @@ module.exports = class ControlsView extends View
 		$('#subtitle-delay').val delay
 
 	changeAudiotrackList: (model, list) =>
+		console.log model, list
 		audiotracks = $('#audiotrack-list')
 		audiotracks.empty()
 		for track in list
 			audiotracks.append $ '<option>',
 				value: track
 				text: track
+		@changeAudiotrack model, model.get 'audiotrack'
 
 	changeAudiotrack: (model, track) =>
 		$('#audiotrack-list option:selected').prop('selected', false)
