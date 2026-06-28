@@ -1,3 +1,5 @@
+migrated to new location: https://codeberg.org/shackspace/augenkrebs
+
 # augenkrebs
 
 augenkrebs ist das Internetabspielgerät des [shack](http://shackspace.de/). Über ein Browser-Interface kann die Wiedergabe von Videodateien (derzeit: aus dem Netz oder von youtube) gesteuert werden.
